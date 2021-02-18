@@ -6,3 +6,4 @@ Given('o usuário esta na url {string}', (url) => {
     
     return driver;
 });
+

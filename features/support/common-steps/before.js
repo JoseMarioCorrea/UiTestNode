@@ -7,4 +7,5 @@ const { Before } = require('cucumber');
 Before(() => {
     chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());
     global.driver = new Builder().forBrowser("chrome").build();
+    driver.manage().window().maximize();
 });
