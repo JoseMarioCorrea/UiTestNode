@@ -435,4 +435,79 @@ Then ('o usuário deve preencher a justificativa e Confirmar', async() => {
     await driver.wait(until.elementLocated(By.id("BtnConfirmReason"))).click();
 });
 
+Given ('que o usuário está localizado na tarefa Verificar Solicitação e Repassar Novas Informações', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Verificar Solicitação e Repassar Novas Informações']`)), 30000);
+    await driver.sleep(5000);
 
+});
+
+When ('o usuário encaminhar as novas informações clicando no botão Encaminhar Novas Informações', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Novas Informações Encaminhadas")), 30000).click();
+    
+});
+
+Then ('o usuário precisa preencher a justificativa e confirmar a justificativa', async() => {
+    await driver.wait(until.elementLocated(By.id("inpDsReasonInputReason")), 30000);
+    await driver.wait(until.elementLocated(By.id("inpDsReasonInputReason")), 30000).sendKeys("Teste Automatizado");      
+    await driver.wait(until.elementLocated(By.id("BtnConfirmReason")), 30000).click();  
+      
+});
+
+When ('o usuário encaminhar o documento ao cooperado', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Documento Encaminhado ao Cooperado")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+    await driver.sleep(3000);
+});
+
+Then ('deve entrar no fluxo AUTO Aguardar Assinatura Digital no DocuSign', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = '[AUTO] Aguardar Assinatura Digital no DocuSign']`)), 30000);
+    //await driver.wait(until.elementLocated(By.id("cboxClose")), 30000).click();
+});
+
+Given ('que o usuário tem a visibilidade estatística de documento Assinado e Documento Expirado', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[1]/div[2]/div[text() = 'Documento Assinado']`)), 30000);
+   //await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[1]/div[2]/span[text() = 'Vai para Solicitação Realizada e Documentos Assinados']`)), 30000);
+    //await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[2]/div[2]/div[text() = 'Vai para Solicitação Realizada e Documentos Assinados']`)), 30000);
+   // await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[2]/div[2]/span[text() = 'Vai para Solicitação Realizada e Documentos Assinados']`)), 30000);
+
+});
+
+When ('o usuário clicar em Documento expirado', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Documento Expirado")), 30000).click();  
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+}); 
+
+Then ('deve direcionar para a tarefa LOOP Notificar Status de Assinatura para o Requisitante', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = '[LOOP] Notificar Status de Assinatura para o Requisitante']`)), 30000);  
+});
+
+Given ('que a tarefa se encontra no Loop de notificação de status', async() => {
+    let tarefanotificacao = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = '[LOOP] Notificar Status de Assinatura para o Requisitante']`)), 30000);  
+    let textnotificacao = tarefanotificacao.getText();
+   // assert.deepStrictEqual(textnotificacao, "[LOOP] Notificar Status de Assinatura para o Requisitante");
+});
+
+When ('quando o status de envio for finalizado', async() => {
+    await driver.wait(until.elementLocated(By.id("icon")), 30000).click();
+    await driver.sleep(1000);
+    await driver.wait(until.elementLocated(By.id("customBtn_Finalizar Envio de Status")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+
+});
+Then ('deve direcionar para a tarefa de Verificação e Solicitação de Repassar Novas Informações', async() =>{
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Verificar Solicitação e Repassar Novas Informações']`)), 30000);
+});
+
+When ('o usuário clicar em documento encaminhado ao cooperado', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Documento Encaminhado ao Cooperado")), 30000).click();
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+});
+
+When ('o usuário clicar em Documento Assinado', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Documento Assinado")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+});
+
+Then ('deve finalizar o Processo', async() =>{
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[3]/div/div/div/a[text() = 'PR 9008 - Assinatura Digital']`)))
+});
