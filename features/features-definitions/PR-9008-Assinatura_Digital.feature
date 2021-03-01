@@ -39,4 +39,38 @@ Feature: PR 9008 Assinatura Digital
         When o usuário clicar em Solicitar Mais Informações
         Then o usuário deve preencher a justificativa e Confirmar 
 
+        Given que o usuário está localizado na tarefa Verificar Solicitação e Repassar Novas Informações
+        When o usuário encaminhar as novas informações clicando no botão Encaminhar Novas Informações
+        Then o usuário precisa preencher a justificativa e confirmar a justificativa
+
+        Given que usuário está na tarefa Encaminhar Documento ao Cooperado no DocuSign 
+        When o usuário Assumir Atividade 
+        Then deve liberar as funcionalidades para o usuário
        
+        Given que o usuário que assumiu a atividade validou todos os campos do formulário estão corretos
+        When o usuário encaminhar o documento ao cooperado 
+        Then deve entrar no fluxo AUTO Aguardar Assinatura Digital no DocuSign
+
+        Given que o usuário tem a visibilidade estatística de documento Assinado e Documento Expirado
+        When o usuário clicar em Documento expirado 
+        Then deve direcionar para a tarefa LOOP Notificar Status de Assinatura para o Requisitante
+
+        Given que a tarefa se encontra no Loop de notificação de status 
+        When quando o status de envio for finalizado 
+        Then deve direcionar para a tarefa de Verificação e Solicitação de Repassar Novas Informações
+
+        Given que o usuário está localizado na tarefa Verificar Solicitação e Repassar Novas Informações
+        When o usuário encaminhar as novas informações clicando no botão Encaminhar Novas Informações
+        Then o usuário precisa preencher a justificativa e confirmar a justificativa
+
+        Given que usuário está na tarefa Encaminhar Documento ao Cooperado no DocuSign 
+        When o usuário Assumir Atividade 
+        Then deve liberar as funcionalidades para o usuário 
+
+        Given que o usuário que assumiu a atividade validou todos os campos do formulário estão corretos 
+        When o usuário clicar em documento encaminhado ao cooperado
+        Then deve entrar no fluxo AUTO Aguardar Assinatura Digital no DocuSign
+
+        Given que o usuário tem a visibilidade estatística de documento Assinado e Documento Expirado
+        When o usuário clicar em Documento Assinado 
+        Then deve finalizar o Processo
