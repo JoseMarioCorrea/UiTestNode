@@ -2,6 +2,7 @@ const assert = require('assert');
 const { When, Then, Given } = require('cucumber');
 const { By, Key, until } = require('selenium-webdriver');
 const { Driver } = require('selenium-webdriver/chrome');
+const { elementIsVisible } = require('selenium-webdriver/lib/until');
 const { DriverService } = require('selenium-webdriver/remote');
 
 Given('o usuário está no Processo Assinaura Digital', async() => {
@@ -49,7 +50,7 @@ When('O usuário inicia o teste do Processo de Assinatura Digital', async() => {
     await driver.wait(until.elementLocated(By.id("HlStartSimulation")), 30000).click();
     // localiza modal de teste
     await driver.switchTo().frame(4); 
-    await driver.sleep(3000);
+    await driver.sleep(1000);
 });
    
 Then('Usuário é direcionado a tarefa de Iniciar Solicitação de Assinatura Digital', async() => {    
@@ -60,8 +61,9 @@ Then('Usuário é direcionado a tarefa de Iniciar Solicitação de Assinatura Di
 
 Given ('o usuário inicia o preenchimento das Informações da Solicitação', async() => {
     // Seleciona a cooperativa 0515
-    await driver.wait(until.elementLocated(By.name("inp34871")), 30000).click();
-    await driver.wait(until.elementLocated(By.css("#coluna-cooperativa > div > select > option:nth-child(2)")), 30000).click();
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp34871"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#coluna-cooperativa > div > select > option:nth-child(2)"))), 30000).click();
 
 });
 
@@ -72,8 +74,8 @@ When ('o Tipo de Solicitação for igual a Adesão de trabalho remoto', async() 
     // insere o cnpj e pesquisa
     await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
     await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
-    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
-    await driver.sleep(5000);
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click(); 
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
     
 });
 
@@ -82,47 +84,21 @@ Then ('deve ser obrigatório anexar arquivo Adesão ao Trabalho Remoto', async()
    
 });
 
-Given ('que o tipo de solicitação é para Adesão de Trabalho Remoto e com as Informações do Associado preenchidos', async() => {
+Given ('que o tipo de solicitação esta com as Informações do Associado preenchidos', async() => {
     // Verifica situação está populada corretamente 
-    let results3 = await driver.wait(until.elementLocated(By.css("#secao-informacoes-associado > div:nth-child(2) > div:nth-child(1) > div > input")), 30000);
-    let text3 = await results3.getText();
-    assert.deepStrictEqual(text3, "");
-    // Verifica se Matricula está populada corretamente 
-    let results4 = await driver.wait(until.elementLocated(By.name("inp34873")), 30000);
-    let text4 = await results4.getText();
-    //assert.deepStrictEqual(text4, "110175");
-    // Verifica se Posto está populada corretamente 
-    let results5 = await driver.wait(until.elementLocated(By.name("inp34874")), 30000);
-    let text5 = await results5.getText();
-    assert.deepStrictEqual(text5, "");
-    // Verifica se Associado está populada corretamente 
-    let results6 = await driver.wait(until.elementLocated(By.name("inp34875")), 30000);
-    let text6 = await results6.getText();
-    assert.deepStrictEqual(text6, "");
-    // Verifica se Tipo de Pessoa está populada corretamente 
-    let results7 = await driver.wait(until.elementLocated(By.name("inp34876")), 30000);
-    let text7 = await results7.getText();
-    assert.deepStrictEqual(text7, "");
-    // Verifica se Profissão / Ramo está populada corretamente 
-    let results8 = await driver.wait(until.elementLocated(By.name("inp34877")), 30000);
-    let text8 = await results8.getText();
-    assert.deepStrictEqual(text8, "");
-    // Verifica se Email do Associado para Envio no DocuSign está populada corretamente 
-    let results9 = await driver.wait(until.elementLocated(By.name("inp34893")), 30000);
-    let text9 = await results9.getText();
-    assert.deepStrictEqual(text9, ""); 
+    await driver.wait(until.elementLocated(By.css("#secao-informacoes-associado > div:nth-child(2) > div:nth-child(1) > div > input")), 30000);
 });
 
 When ('preencher os campos Celular e marcar a flag contas Associado', async() => {
-    await driver.sleep(15000);
+    await driver.wait(until.elementLocated(By.id("customBtn_Solicitação Encaminhada")), 300000);
     await driver.wait(until.elementLocated(By.css("#secao-informacoes-associado > div:nth-child(3) > div.col-xs-12.col-md-2 > div > select")), 30000).click();
     await driver.wait(until.elementLocated(By.css("#secao-informacoes-associado > div:nth-child(3) > div.col-xs-12.col-md-2 > div > select > option:nth-child(2)")), 30000).click();
     await driver.wait(until.elementLocated(By.css("#switchConta > label")), 30000).click();
 });
 
 Then ('verificar se está presente em tela o alerta amarelo', async() => {
-    await driver.sleep(3000);
-    let results10 = await driver.wait(until.elementLocated(By.css("#secao-informacoes-associado > div:nth-child(3) > div.col-xs-12.col-md-8 > div > div")), 30000);
+   // await driver.sleep(3000);
+    let results10 = await driver.wait(until.elementIsVisible(driver.findElement(By.css("#secao-informacoes-associado > div:nth-child(3) > div.col-xs-12.col-md-8 > div > div"))), 30000);
     let text10 = await results10.getText();    
     assert.deepStrictEqual(text10, "ATENÇÃO! VALIDE SE O E-MAIL ESTÁ CADASTRADO CORRETAMENTE\nCaso não possua e-mail ou tenha mais de 1, especificar em mensagens qual e-mail utilizar para comunicar o associado via DocuSign.");
 });
@@ -132,12 +108,13 @@ Given ('que o usuário realiza a pesquisa de Vinculos', async() => {
     await driver.wait(until.elementLocated(By.id("input-buscar-terceiro")), 30000).click()
     await driver.wait(until.elementLocated(By.id("input-buscar-terceiro")), 30000).sendKeys("80448410915");
     await driver.wait(until.elementLocated(By.id("botao-buscar-cpfTerceiro")), 30000).click();
+    await driver.sleep(2000);
 });
 
 When ('os dados são buscados automaticamente', async() => {
-    await driver.sleep(5000);
-    await driver.wait(until.elementLocated(By.name("inp34897")), 30000);
-    let results11 = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div:nth-child(3) > table > tbody > tr:nth-child(2) > td:nth-child(4) > select > option:nth-child(2)")), 30000);
+    
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp34897"))), 30000);
+    let results11 = await driver.wait(until.elementIsVisible(driver.findElement(By.css("#secao-informacoes-documentos > div:nth-child(3) > table > tbody > tr:nth-child(2) > td:nth-child(4) > select > option:nth-child(2)"))), 30000);
     let text11 = await results11.getText();
     assert.deepStrictEqual(text11, "rogeriolatronico@hotmail.com");
     let results12 = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div:nth-child(3) > table > tbody > tr:nth-child(2) > td:nth-child(5) > select > option:nth-child(2)")), 30000);
@@ -165,10 +142,10 @@ When ('inserir dois participantes para assinar digitalmente o documento', async(
     await driver.wait(until.elementLocated(By.name("inp34879")), 30000).sendKeys("Teste Automatizados");
     await driver.wait(until.elementLocated(By.name("inp34881")), 30000).sendKeys("teste@automatizados.com.br");
     await driver.wait(until.elementLocated(By.name("inp34894")), 30000).sendKeys("41999999999");
-    await driver.sleep(3000);
-    await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > thead > tr > td")), 30000).click();
-    await driver.sleep(3000);
-    await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > tbody > tr:nth-child(2) > td:nth-child(2) > input")), 30000).sendKeys("Teste de Automação");
+    //await driver.sleep(3000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > thead > tr > td"))), 30000).click();
+    //await driver.sleep(3000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > tbody > tr:nth-child(2) > td:nth-child(2) > input"))), 30000).sendKeys("Teste de Automação");
     await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > tbody > tr:nth-child(2) > td:nth-child(3) > input")), 30000).sendKeys("teste@automacao.com.br");
     await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > tbody > tr:nth-child(2) > td:nth-child(4) > input")), 30000).sendKeys("41919191919");
     await driver.wait(until.elementLocated(By.name("inp34883")), 30000).sendKeys("Primeiro a assinar é o\n Teste automatizados\n e o seundo a assinar será o\n Teste de Automação");
@@ -184,25 +161,25 @@ Then ('verificar alerta na seção Mensagens está presente', async() => {
 Given ('que o usuário deve enviar em anexo o Termo de Solicitação para Prestação de Serviços de Cobrança', async() => {
     await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 30000).click();
     await driver.switchTo().frame(1)
-    await driver.sleep(5000);
+    await driver.sleep(2000);
     let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
     await driver.wait(until.elementLocated(By.css("#fileupload > div.row-fluid.fileupload-buttonbar > div.span7 > span.btn.btn-info.fileinput-button")), 30000);
     //await fileInput.click();
     await fileInput.sendKeys("C:/Unicred/Uploads/Upload.txt");
     await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
-    await driver.sleep(3000);
+    await driver.sleep(2000);
     await driver.switchTo().frame(4);     
     
 });
 
 When ('o usuário tiver mais de uma função no sistema', async() => {
-    //await driver.switchTo().defaultContent();
-    await driver.wait(until.elementLocated(By.name("inpCodPositionArea")), 30000).click();
+    //await driver.sleep(4000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inpCodPositionArea"))), 30000).click();
     
 });
 
 Then ('Deve selecionar a função desejada e encaminhar a solicitação', async() => {
-    await driver.wait(until.elementLocated(By.css("#controllers > div.alert.alert-info > div > select > option:nth-child(3)")), 30000).click();
+    await driver.wait(until.elementLocated(By.css("#controllers > div.alert.alert-info > div > select > option:nth-child(2)")), 30000).click();
     await driver.wait(until.elementLocated(By.id("customBtn_Solicitação Encaminhada")), 30000).click();
 }); 
 
@@ -214,11 +191,11 @@ Given ('que usuário está na tarefa Encaminhar Documento ao Cooperado no DocuSi
 
 When ('o usuário Assumir Atividade', async() => { 
     await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 30000).click();
-    await driver.sleep(5000);
+    //await driver.sleep(2000);
 });
 
 Then ('deve liberar as funcionalidades para o usuário', async() => {
-    await driver.wait(until.elementLocated(By.id("inpDsMessage")), 30000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsMessage"))), 30000);
 });
 
 Given ('que o usuário que assumiu a atividade validou todos os campos do formulário estão corretos', async() => {
@@ -242,7 +219,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     assert.deepStrictEqual(textTipoSolicitacao, "Tipo de Solicitação");
     let solicitacaoCoop = await driver.wait(until.elementLocated(By.id("div34882")), 30000);
     let textSolicitacao = await solicitacaoCoop.getText();
-    assert.deepStrictEqual(textSolicitacao, "Adesão ao Trabalho Remoto");
+    //assert.deepStrictEqual(textSolicitacao, "Adesão ao Trabalho Remoto");
     let cnpjCpf = await driver.wait(until.elementLocated(By.css("#coluna-buscar-cpfcnpj > div > label")), 30000);
     let textcnpjCpf = await cnpjCpf.getText();
     assert.deepStrictEqual(textcnpjCpf, "CPF / CNPJ")
@@ -251,7 +228,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     assert.deepStrictEqual(textcpf, "80448410915");
     
     //Verificar informações do associado
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let tituloassociado = await driver.wait(until.elementLocated(By.css("#secao-informacoes-associado > h5")), 30000);
     let textAssociado = await tituloassociado.getText();
     assert.deepStrictEqual(textAssociado, "Informações do Associado");
@@ -311,7 +288,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     //assert.deepStrictEqual(textcontas, "82899");
 
     //Verificar Informações do Documento 
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let vinculosCasoHouver = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div:nth-child(3) > div")), 3000);
     let textVinculosCasoHouver = await vinculosCasoHouver.getText();
     assert.deepStrictEqual(textVinculosCasoHouver, "Vínculos, caso houver:");
@@ -335,7 +312,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     assert.deepStrictEqual(textAssinarDocumento, "Assinará o Documento");
 
     //inicio da verificação dos dados da seção Informações do Documento
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let qualificacaoDado = await driver.wait(until.elementLocated(By.id("div34897")), 30000);
     let textqualificacaoDado = await qualificacaoDado.getText();
     assert.deepStrictEqual(textqualificacaoDado, "CÔNJUGE");
@@ -352,7 +329,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     let textassinaraDado = await assinaraDado.getText();
     assert.deepStrictEqual(textassinaraDado, "Não");
     // dados inferiores 
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let qualificacaoDado2 = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div:nth-child(3) > table > tbody > tr:nth-child(2) > td:nth-child(1)")), 30000);
     let textqualificacaoDado2 = await qualificacaoDado2.getText();
     assert.deepStrictEqual(textqualificacaoDado2, "Principal");
@@ -369,7 +346,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     let textassinaraDados = await assinaraDados.getText();
     assert.deepStrictEqual(textassinaraDados, "Sim");
     // seção - Dados dos demais participantes para assinarem digitalmente o documento da solicitação, caso houver: [ para quando não houverem os dados no SAU ]
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let tituloDadosDoDemais = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > div")), 30000);
     let textTituloDadosDoDemais = await tituloDadosDoDemais.getText();
     assert.deepStrictEqual(textTituloDadosDoDemais, "Dados dos demais participantes para assinarem digitalmente o documento da solicitação, caso houver: [ para quando não houverem os dados no SAU ]");
@@ -387,7 +364,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     let textavalista = await avalista.getText();
     assert.deepStrictEqual(textavalista, "Qualificação (Avalista, Testemunha, etc)");
     // dados
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let nomeDoRecebedorDado = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > tbody > tr:nth-child(1) > td:nth-child(1)")), 30000);
     let textnomeDoRecebedorDado = await nomeDoRecebedorDado.getText();
     assert.deepStrictEqual(textnomeDoRecebedorDado, "Teste Automatizados");
@@ -401,7 +378,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
     let textassinadoDado = await assinadoDado.getText();
     assert.deepStrictEqual(textassinadoDado, "");
      // dados abaixo
-     await driver.sleep(2000);
+    // await driver.sleep(2000);
      let nomeDoRecebedorDado2 = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.table-responsive-sm.mt-5 > table > tbody > tr:nth-child(2) > td:nth-child(1)")), 30000);
      let textnomeDoRecebedorDado2 = await nomeDoRecebedorDado2.getText();
      assert.deepStrictEqual(textnomeDoRecebedorDado2, "Teste de Automação");
@@ -415,7 +392,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
      let textassinadoDado2 = await assinadoDado2.getText();
      assert.deepStrictEqual(textassinadoDado2, "");
     //detalhes da solicitação 
-    await driver.sleep(2000);
+    //await driver.sleep(2000);
     let detalhesDaSolicitacaoTitle = await driver.wait(until.elementLocated(By.css("#secao-informacoes-documentos > div.row > div > div > label")), 30000);
     let textdetalhesDaSolicitacaoTitle = await detalhesDaSolicitacaoTitle.getText();
     assert.deepStrictEqual(textdetalhesDaSolicitacaoTitle, "Detalhes da Solicitação");
@@ -437,12 +414,12 @@ Then ('o usuário deve preencher a justificativa e Confirmar', async() => {
 
 Given ('que o usuário está localizado na tarefa Verificar Solicitação e Repassar Novas Informações', async() => {
     await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Verificar Solicitação e Repassar Novas Informações']`)), 30000);
-    await driver.sleep(5000);
+    //await driver.sleep(3000);
 
 });
 
 When ('o usuário encaminhar as novas informações clicando no botão Encaminhar Novas Informações', async() => {
-    await driver.wait(until.elementLocated(By.id("customBtn_Novas Informações Encaminhadas")), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Novas Informações Encaminhadas"))), 30000).click();
     
 });
 
@@ -454,22 +431,22 @@ Then ('o usuário precisa preencher a justificativa e confirmar a justificativa'
 });
 
 When ('o usuário encaminhar o documento ao cooperado', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Documento Encaminhado ao Cooperado"))), 3000);
     await driver.wait(until.elementLocated(By.id("customBtn_Documento Encaminhado ao Cooperado")), 3000).click();
     await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
-    await driver.sleep(3000);
+    //await driver.sleep(3000);
 });
 
 Then ('deve entrar no fluxo AUTO Aguardar Assinatura Digital no DocuSign', async() => {
-    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = '[AUTO] Aguardar Assinatura Digital no DocuSign']`)), 30000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#frm > div.title > h1"))), 30000);
     //await driver.wait(until.elementLocated(By.id("cboxClose")), 30000).click();
 });
 
 Given ('que o usuário tem a visibilidade estatística de documento Assinado e Documento Expirado', async() => {
+    await driver.sleep(5000);
+    //await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Documento Assinado"))), 30000);
     await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[1]/div[2]/div[text() = 'Documento Assinado']`)), 30000);
-   //await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[1]/div[2]/span[text() = 'Vai para Solicitação Realizada e Documentos Assinados']`)), 30000);
-    //await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[2]/div[2]/div[text() = 'Vai para Solicitação Realizada e Documentos Assinados']`)), 30000);
-   // await driver.wait(until.elementLocated(By.xpath(`//*[@id="divStatisticsTable"]/div/div[2]/div[2]/span[text() = 'Vai para Solicitação Realizada e Documentos Assinados']`)), 30000);
-
+   
 });
 
 When ('o usuário clicar em Documento expirado', async() => {
@@ -478,18 +455,17 @@ When ('o usuário clicar em Documento expirado', async() => {
 }); 
 
 Then ('deve direcionar para a tarefa LOOP Notificar Status de Assinatura para o Requisitante', async() => {
-    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = '[LOOP] Notificar Status de Assinatura para o Requisitante']`)), 30000);  
+    await driver.wait(until.elementLocated(By.css("#frm > div.title > h1")), 30000);  
 });
 
 Given ('que a tarefa se encontra no Loop de notificação de status', async() => {
-    let tarefanotificacao = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = '[LOOP] Notificar Status de Assinatura para o Requisitante']`)), 30000);  
-    let textnotificacao = tarefanotificacao.getText();
-   // assert.deepStrictEqual(textnotificacao, "[LOOP] Notificar Status de Assinatura para o Requisitante");
+   // await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#icon"))), 30000).click();
 });
 
 When ('quando o status de envio for finalizado', async() => {
-    await driver.wait(until.elementLocated(By.id("icon")), 30000).click();
-    await driver.sleep(1000);
+    await driver.sleep(3000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("aActions"))), 30000);
     await driver.wait(until.elementLocated(By.id("customBtn_Finalizar Envio de Status")), 3000).click();
     await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
 
@@ -509,5 +485,478 @@ When ('o usuário clicar em Documento Assinado', async() => {
 });
 
 Then ('deve finalizar o Processo', async() =>{
-    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[3]/div/div/div/a[text() = 'PR 9008 - Assinatura Digital']`)))
+    await driver.switchTo().defaultContent();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#frm > div.navbar.navbar-inverse.navbar-header > div > div > div > a"))), 30000);
+    let titulo = await driver.wait(until.elementLocated(By.css("#frm > div.navbar.navbar-inverse.navbar-header > div > div > div > a")), 30000);
+     let resultsTitulo = await titulo.getText();
+     assert.deepStrictEqual(resultsTitulo, "PR 9008 - Assinatura Digital"); 
+    //await driver.sleep(3000);
+    //await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[3]/div/div/div/a[text() = 'PR 9008 - Assinatura Digital']`)), 30000)
+});
+
+When ('o Tipo de Solicitação for igual a Adesão de Cobrança', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(3)")), 3000).click();
+ // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Adesão de Cobrança', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Adesão de Seguros - Vida', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(4)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Adesão de Seguros - Vida', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Adesão e Cancelamento de Cesta de Relacionamento', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(5)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Adesão e Cancelamento de Cesta de Relacionamento', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Aditamento de Contrato', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(6)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Aditamento de Contrato', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Alteração de Garantia', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(7)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Alteração de Garantia', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Alteração de Modalidade de Conta Corrente', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(8)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Alteração de Modalidade de Conta Corrente', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Atualização Cadastral', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(9)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Atualização Cadastral', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Atualização de Renda por Média de Depósito', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(10)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Atualização de Renda por Média de Depósito', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Auxílio Funeral', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(11)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Auxílio Funeral', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Câmbio', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(12)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Câmbio', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Canais IB Mobile', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(13)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Canais IB Mobile', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Cheque Especial', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(14)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Cheque Especial', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Cheques Folhas Talão', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(15)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Cheques Folhas Talão', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Contrato de Crédito', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(16)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Contrato de Crédito', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Contrato de Investimentos', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(17)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Contrato de Investimentos', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Débito Automático', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(18)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Débito Automático', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Desligamento de Cooperado', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(19)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Desligamento de Cooperado', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Documentos para Associação', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(20)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Documentos para Associação', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Outros', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(21)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Outros', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Portabilidade de Salário', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(22)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Portabilidade de Salário', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Precaver', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(23)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Precaver', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Prestamista DPS', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(24)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Prestamista DPS', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Prestamista Termo de Adesão', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(25)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Prestamista Termo de Adesão', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Procuração Particular', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(26)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Procuração Particular', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Renda Familiar Estrangeira', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(27)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Renda Familiar Estrangeira', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Sustação de Cheque', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(28)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Sustação de Cheque', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Termo de Adesão ao Cartão', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(29)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Termo de Adesão ao Cartão', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Titularidade de Conta', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(30)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Titularidade de Conta', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Transferência de Associado entre Agências', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(31)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Transferência de Associado entre Agências', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Integralização Espontânea', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(22)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Integralização Espontânea', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+When ('o Tipo de Solicitação for igual a Encerramento de Conta', async() => {
+    await driver.wait(until.elementLocated(By.name("inp34882")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#coluna-documento > div > select > option:nth-child(21)")), 3000).click();
+    // insere o cnpj e pesquisa
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).click();
+    await driver.wait(until.elementLocated(By.name("inp34872")), 30000).sendKeys("80448410915");
+    await driver.wait(until.elementLocated(By.id("botao-buscar-cpfcnpj")), 30000).click();  
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000);
+});
+
+Then ('deve ser obrigatório anexar arquivo Encerramento de Conta', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span")), 6000);
+});
+
+Then ('deve clicar em cancelar a solicitação', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Cancelada"))), 3000).click();
+}); 
+
+When ('o usuário clicar em Validar Manualmente', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Validar Manualmente")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+}); 
+
+Then ('deve direcionar para a atividade Integração Retorno DocuSIgn Não Realizada - Realizar Atividade Manualmente', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Integração Retorno DocuSIgn Não Realizada - Realizar Atividade Manualmente']`)), 3000).click();
+});
+
+When ('o usuário clicar em Retornar ao Requisitante para Contato com Cooperado', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Retornado ao Requisitante para Contato com Cooperado")), 3000).click();
+});
+
+Then ('Preencher a justificativa', async() => {
+    await driver.wait(until.elementLocated(By.id("inpDsReasonInputReason")), 3000).sendKeys("teste");
+    await driver.wait(until.elementLocated(By.id("BtnConfirmReason")), 3000).click();
+}); 
+
+When ('o usuário clicar em Documentos Assinado Digitalmente', async() => {
+    await driver.wait(until.elementLocated(By.id("customBtn_Documentos Assinados Digitalmente")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+
+});
+
+Given ('que o usuário Assumiu Atividade', async() => {
+    await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 30000).click();
+    await driver.sleep(2000);
 });
