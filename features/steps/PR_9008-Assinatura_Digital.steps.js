@@ -15,7 +15,7 @@ Given('o usuário está no Processo Assinaura Digital', async() => {
     await driver.wait(until.elementLocated(By.id("inpDsFlowName")), 30000).sendKeys('PR 9008 - Assinatura Digital', Key.ENTER);        
     await driver.wait(until.elementLocated(By.id("inpStDeploy")),30000).click();
     await driver.wait(until.elementLocated(By.css("#inpStDeploy > option:nth-child(2)")), 3000).click();
-    await driver.wait(until.elementLocated(By.name("btnPesqFiltro"), 30000)).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("btnPesqFiltro"), 30000))).click();
     await driver.wait(until.elementLocated(By.css("#containertable > div > table > tbody > tr > td:nth-child(10) > span")), 30000).click();
     //Interação com a nova aba
     await driver.wait(
@@ -402,7 +402,7 @@ Given ('que o usuário que assumiu a atividade validou todos os campos do formul
 });
 
 When ('o usuário clicar em Solicitar Mais Informações', async() => {
-    await driver.wait(until.elementLocated(By.id("customBtn_Mais Informações Solicitadas")), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Mais Informações Solicitadas"))), 30000).click();
     
 }); 
 
@@ -933,8 +933,8 @@ Then ('deve clicar em cancelar a solicitação', async() => {
 }); 
 
 When ('o usuário clicar em Validar Manualmente', async() => {
-    await driver.wait(until.elementLocated(By.id("customBtn_Validar Manualmente")), 3000).click();
-    await driver.wait(until.elementLocated(By.css("#cboxLoadedContent > div > div > button.btn.btn-success")), 3000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Validar Manualmente"))), 3000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#cboxLoadedContent > div > div > button.btn.btn-success"))), 3000).click();
 }); 
 
 Then ('deve direcionar para a atividade Integração Retorno DocuSIgn Não Realizada - Realizar Atividade Manualmente', async() => {
