@@ -1,8 +1,7 @@
 Feature: PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral
 
     Feature Description
-
-Scenario: Cadastro PF - Associado apenas matrícula
+Scenario: Atualização PF - Alterar Diversos Contextos
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
     When Realizar o Login "jose.correa" no sistema
     Then inserir a senha "Unijui2421" no sistema 
@@ -11,72 +10,190 @@ Scenario: Cadastro PF - Associado apenas matrícula
     When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
     Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
 
-    Given O usuário está localizado na Seção Informaçoes da Solicitação 
-    When Selecionar Cadastro PF
-    Then Contexto Associado | Apenas matrícula 
-    Then Deve auto selecionar o Motivo - Outros  
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - Alterar Diversos Contextos
+    Then Deve mostrar uma mensagem de encaminhar documentos obrigatórios 
 
-    Given O usuário prencheu os campos acima e habilitou os novos campos Cooperativa Posto CPF-CNPJ Nome Completo
-    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
-    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
-    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
-    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento  
- 
-    Given O usuário está localizado em Informações Adicionais
-    Then Necessário validar a mensagem tooltip explicativa de Abertura de Conta Espelho?
-    Then Necessário validar a mensagem tooltip explicativa de Possui Assinatura Digital?
-    Then Necessário validar a mensagem tooltip explicativa de Deseja realizar uma análise prévia de exceção?
-    Then Necessário validar a mensagem tooltip explicativa de Solicitação possui alguma exceção?
-
-
-    Given O usuário habilita a primeira flag Abertura de Conta Espelho 
-    When O usuário habiliar a segunda flag - Possui Assinatura Digital? 
-    Then Deve aprecer uma mensagem em tela mostrando - Essa opção apenas retira a obrigatoriedade do cartão autógrafo. Assinatura digital ainda deve ser feita pelo PR 9008 - Assinatura Digital
+    Given A seleção do Motivo Crédito
+    Then mostrar a mensagem de atendimento com SLA diferenciado
     
-    Given O usuário marca a flag - Abertura de Conta Com Procuração?
-    When O usuário marcar a flag - Renda é comprovada através de média de comprovantes?
-    Then Deve aparecer um mensagem em tela mostrando - O valor solicitado de média pode ser alterado pelo diretor da cooperativa ou alçada competente via instância do processo associação, abertura de conta ou atualização cadastral no INTEGRA
-    Then Deve abrir o campo Valor Média Extrato
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CPF não possui cadastro 
 
-    Given O usuário marca a flag - Deseja realizar uma análise prévia de exceção?
-    When Abrir o campo - Informações da Exceção
-    Then Deve preencher os campos da Exceção 
-
-    Given O usuário marca a flag - Solicitação possui alguma exceção? 
+    Given O CPF digitado é um CPF cadastrado 
     When Clicar em Buscar 
-    Then Deve habilitar os campos Profissão, Score Serasa, Risco Serasa 
+    Then Deve mostrar os dados corretamente 
 
-    Given Existem documentos obrigatórios que devem ser anexados 
-    When Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
-    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Given O usuário clicou em Encaminhar Solicitação 
+    When Os arquivos não estão anexados 
+    Then Deve mostrar uma mensagem informando que não possuí anexos. 
+
+    Given O usuário anexou arquivo Ficha de Dados Cadastrais Obrigatório
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then direcionar para a Tarefa Conferir Informações e Documentos 
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
     
-    Given Anexar arquivo  Documento de identificação Obrigatório
-    When Anexar arquivo  Comprovante de residência endereço Obrigatório
-    Then Anexar arquivo  Autorização débito capital conta de terceiros Obrigatório
+Scenario: Atualização PF - Alterar Endereço 
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - Alterar Endereço 
+    Then Selecionar o Motivo Campanhas
     
-    Given Anexar arquivo  Serasa Obrigatório
-    When Anexar arquivo  Bacén Obrigatório
-    Then Anexar arquivo  Receita Federal Obrigatório
-    Then Deve Encaminhar Solicitação 
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CPF não possui cadastro 
 
-    Given O usuário assume a tarefa 
-    When Validar se os campos foram populados e estão presentes corretamente na seção Informações da Solicitação
-    Then Validar se os campos foram populados e estão presentes corretamente na seção Informações Adicionais 
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
 
-    Given O usuário está na seção Anexos 
-    Then Localizar os arquivos anexados  
-    When Aprovar Solicitação
-    Then Deve direcionar para a tarefa Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral
+    Given O usuário clicou em Encaminhar Solicitação 
+    When O arquivo Comprovante de residência e endereço é obrigatório 
+    Then Deve mostrar uma mensagem informando que não possuí anexos.
+
+    Given O usuário anexou Comprovante de residência e endereço 
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then direcionar para a Tarefa Conferir Informações e Documentos
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Atualização PF - Alterar Endereço
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes  
+
+Scenario: Atualização PF - Alterar Estado Civil 
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - Alterar Estado Civil 
+    Then Deve mostrar a mensagem Quando for casado ou união estável deve ser anexado o documento de identificação do cônjuge
+    Then Selecionar o Motivo Movimentação na Cooperativa
     
-    When Validar se os campos foram populados e estão presentes corretamente na seção Informações da Solicitação
-    Then Validar se os campos foram populados e estão presentes corretamente na seção Informações Adicionais
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CPF não possui cadastro 
 
-    Given O usuário está na seção Anexos 
-    When Localizar os arquivos anexados 
-    Then Encaminhar Solicitação
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
 
+    Given O usuário clicou em Encaminhar Solicitação 
+    When O arquivo Estado Civil é obrigatório 
+    Then Deve mostrar uma mensagem informando que não possuí anexos.
 
+    Given O usuário anexou Comprovante de Estado Civil 
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then direcionar para a Tarefa Conferir Informações e Documentos
 
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Atualização PF - Alterar Estado Civil
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes  
 
+Scenario: Atualização PF - Alterar Nome 
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
 
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - Alterar Nome 
+    Then Selecionar o Motivo Movimentação na Cooperativa
     
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CPF não possui cadastro 
+
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
+
+    Given O usuário clicou em Encaminhar Solicitação 
+    When O arquivo Documento e identificação e Receita Federal é obrigatório 
+    Then Deve mostrar uma mensagem informando que não possuí anexos.
+
+    Given O usuário anexou Comprovante de Documento e identificação e Receita Federal é obrigatório
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then direcionar para a Tarefa Conferir Informações e Documentos
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Atualização PF - Alterar Nome
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Atualização PF - Alterar Renda 
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - Alterar Renda 
+    Then Selecionar o Motivo Movimentação na Cooperativa
+    
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CPF não possui cadastro 
+
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
+
+    Given O usuário clicou em Encaminhar Solicitação 
+    When O arquivo Comprovante de renda é obrigatório 
+    Then Deve mostrar uma mensagem informando que não possuí anexos.
+
+    Given O usuário anexou Comprovante de renda
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then direcionar para a Tarefa Conferir Informações e Documentos
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Atualização PF - Alterar Renda
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Atualização PF - C/C para Associado que possui apenas matrícula 
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - CC para Associado que possui apenas matrícula
+    Then Selecionar o Motivo Movimentação na Cooperativa
+    
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CPF não possui cadastro  
+
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar uma mensagem informando que cooperado já possui conta 
+    Then Clicar em Cancelar  
+     
