@@ -197,3 +197,36 @@ Scenario: Atualização PF - C/C para Associado que possui apenas matrícula
     Then Deve mostrar uma mensagem informando que cooperado já possui conta 
     Then Clicar em Cancelar  
      
+Scenario: Atualização PF - Conta Salário  
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto - Conta Salário
+    Then Deve selecionar automaticamente o Motivo Outros 
+    
+    Given Cooperativa, Posto preenchidos 
+    When Preencher um CPF válido e não preencher Matricula Empregador e clicar em Buscar
+    Then Mensagem informando que a Matricula não existe na base de dados  
+
+    Given O CPF digitado e uma Matricula Empregador válido 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente para o CPF e Matricula digitados
+
+    Given O usuário clicou em Encaminhar Solicitação 
+    When O arquivo Comprovante de Ficha de Dados Cadastrais é obrigatório 
+    Then Deve mostrar uma mensagem informando que não possuí anexos.
+
+    Given O usuário anexou Comprovante de Ficha de Dados Cadastrais
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then direcionar para a Tarefa Conferir Informações e Documentos
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Atualização PF - Conta Salário
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
