@@ -884,3 +884,1054 @@ Scenario: Atualização PJ - Terceiro
     When Validar os dados mostrados estão corretos para Atualização PJ - "Terceiro" 
     Then Clicar em Cancelar Instância 
     Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Associado apenas matrícula
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 0 - "Associado (apenas matrícula)"
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    
+    Given Anexar arquivo  Documento de identificação Obrigatório
+    When Anexar arquivo  Comprovante de residência endereço Obrigatório
+    Then Anexar arquivo  Autorização débito capital conta de terceiros Obrigatório
+    
+    Given Anexar arquivo  Serasa Obrigatório
+    When Anexar arquivo  Bacén Obrigatório
+    Then Anexar arquivo  Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Associado (apenas matrícula)" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Associado apenas matrícula para Menores de Idade
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 1 - "Associado (apenas matrícula) para Menores de Idade"
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    
+    Given Anexar arquivo  Documento de identificação Obrigatório
+    When Anexar arquivo  Comprovante de residência endereço Obrigatório
+    Then Anexar arquivo  Autorização débito capital conta de terceiros Obrigatório
+    Then Anexar arquivo  Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Associado (apenas matrícula) para Menores de Idade" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+
+Scenario: Cadastro PF - Conta Salário
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 2 - "Conta Salário"
+    Then Deve habilitar o campo Matricula Empregador
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Conta Salário" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Matrícula e CC Conjunta
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 3 - "Matrícula e C/C Conjunta"
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Documento de identificação Obrigatório
+    When Anexar arquivo  Comprovante de residência endereço Obrigatório
+    Then Anexar arquivo  Autorização débito capital conta de terceiros Obrigatório
+    Then Anexar arquivo Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo  Serasa Obrigatório
+    When Anexar arquivo  Bacén Obrigatório
+    Then Anexar arquivo  Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Matrícula e C/C Conjunta" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Matrícula e CC Individual
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 4 - "Matrícula e C/C Individual"
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Documento de identificação Obrigatório
+    When Anexar arquivo  Comprovante de residência endereço Obrigatório
+    Then Anexar arquivo  Autorização débito capital conta de terceiros Obrigatório
+    Then Anexar arquivo Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo  Serasa Obrigatório
+    When Anexar arquivo  Bacén Obrigatório
+    Then Anexar arquivo  Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Matrícula e C/C Individual" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Matrícula e CC para Menores de Idade
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 5 - "Matrícula e C/C para Menores de Idade"
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Documento de identificação Obrigatório
+    When Anexar arquivo  Comprovante de residência endereço Obrigatório
+    Then Anexar arquivo Cartão autógrafo Obrigatório
+    Then Anexar arquivo  Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Matrícula e C/C para Menores de Idade" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Terceiro Sócio Representante, Aval, Tutor e Curador
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 6 - "Terceiro (Sócio/Representante, Aval, Tutor e Curador)"
+    Then Selecionar o Motivo 0 - "Campanhas"
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    
+    Given Anexar arquivo  Documento de identificação Obrigatório
+    When Anexar arquivo  Comprovante de residência endereço Obrigatório
+    Then Anexar arquivo  Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Terceiro (Sócio/Representante, Aval, Tutor e Curador)" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PF - Vendedor
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 7 - "Vendedor"
+    Then Selecionar o Motivo 0 - "Campanhas"
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar
+    Then Ocorrer o erro informando que o CNPJ-CPF está incorreto 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Vendedor" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - CC para Matriz e Filial
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 0 - "C/C para Matriz e Filial"
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+   Given Cooperativa, Posto preenchidos 
+    When Preencher um CNPJ não cadastrado e clicar em Buscar
+    Then Mensagem informando que o CNPJ não possui cadastro 
+    
+    Given O CNPJ digitado é um CNPJ cadastrado 
+    When Clicar em Buscar  
+    Then Deve mostrar os dados corretamente - "Cadastro PJ"
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo   Comprovante de endereço Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Anexar arquivo da Receita Federal Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PJ - "C/C para Matriz e Filial" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Cadastrar Terceiro
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 1 - "Cadastrar Terceiro"
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Cadastrar Terceiro" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - Associações
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 2 - "Matrícula e C/C - Associações"
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - Associações" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - Condomínios
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 3 - "Matrícula e C/C - Condomínios"
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - Condomínios" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - Cooperativas
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 4 - "Matrícula e C/C - Cooperativas"
+    Then Deve aparecer uma mensagem informando o envio de relação de faturamento 
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - Cooperativas" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - Empresário Individual
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 5 - "Matrícula e C/C - Empresário Individual"
+    Then Deve aparecer uma mensagem informando o envio de relação de faturamento 
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - Empresário Individual" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - Entidades Sem Fins Lucrativos
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 6 - "Matrícula e C/C - Entidades Sem Fins Lucrativos"
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - Entidades Sem Fins Lucrativos" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - LTDA EIRELI ou Sociedade Simples LTDA ou PURA
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 8 - "Matrícula e C/C - LTDA/EIRELI ou Sociedade Simples LTDA ou PURA"
+    Then Deve aparecer uma mensagem informando o envio de relação de faturamento 
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - LTDA/EIRELI ou Sociedade Simples LTDA ou PURA" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - MEI
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 9 - "Matrícula e C/C - MEI"
+    Then Deve aparecer uma mensagem informando o envio de relação de faturamento 
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - MEI" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Matrícula e CC - SA
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 10 - "Matrícula e C/C - SA"
+    Then Deve aparecer uma mensagem informando o envio de relação de faturamento 
+    Then Deve selecionar automaticamente o Motivo Outros 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório
+    
+    Given Anexar arquivo  Cartão CNPJ Obrigatório
+    When Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório
+    Then Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório
+    Then Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório
+    Then Anexar arquivo de Cartão autógrafo Obrigatório
+    
+    Given Anexar arquivo do Serasa Obrigatório
+    When Anexar arquivo do Bacén Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Matrícula e C/C - SA" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Cadastro PJ - Vendedor
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 11 - "Vendedor" 
+    Then Selecionar o Motivo 0 - "Campanhas" 
+     
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Cadastro PJ - "Vendedor" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes 
+
+Scenario: Procurador - Alterar Procurador na CC do Cooperado
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Procurador
+    When O usuário seleciona o Contexto 0 - "Alterar Procurador na C/C do Cooperado" 
+    Then Selecionar o Motivo 0 - "Campanhas" 
+
+    Given Cooperativa, Posto Selecionados 
+    When Preenchido a Conta do Outorgante 
+    Then Preencher CPF Procurador e o Nome Completo 
+
+    Given Ao clicar em Buscar 
+    When Anexar Arquivo Procuração Obrigatório
+    Then Deve anexar o arquivo Revogação Obrigatório  
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Procurador - "Alterar Procurador na C/C do Cooperado" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes
+
+Scenario: Procurador - Atualizar Procurador
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Procurador
+    When O usuário seleciona o Contexto 1 - "Atualizar Procurador" 
+    Then Selecionar o Motivo 0 - "Campanhas" 
+
+    Given Cooperativa, Posto Selecionados 
+    When Preenchido a Conta do Outorgante 
+    Then Preencher CPF Procurador e o Nome Completo 
+
+    Given Ao clicar em Buscar 
+    When Anexar Arquivo Procuração Obrigatório
+    Then Deve anexar o arquivo Revogação Obrigatório  
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Procurador - "Atualizar Procurador" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes
+
+Scenario: Procurador - Incluir Procurador na C/C do Cooperado
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Procurador
+    When O usuário seleciona o Contexto 2 - "Incluir Procurador na C/C do Cooperado" 
+    Then Selecionar o Motivo 0 - "Campanhas" 
+
+    Given Cooperativa, Posto Selecionados 
+    When Preenchido a Conta do Outorgante 
+    Then Preencher CPF Procurador e o Nome Completo 
+
+    Given Ao clicar em Buscar 
+    When Anexar Arquivo Procuração Obrigatório
+    Then Deve anexar o arquivo Revogação Obrigatório  
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Procurador - "Incluir Procurador na C/C do Cooperado" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes
+
+Scenario: Procurador - Revogar Procurador na C/C do Cooperado
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Procurador
+    When O usuário seleciona o Contexto 3 - "Revogar Procurador na C/C do Cooperado" 
+    Then Selecionar o Motivo 0 - "Campanhas" 
+
+    Given Cooperativa, Posto Selecionados 
+    When Preenchido a Conta do Outorgante 
+    Then Preencher CPF Procurador e o Nome Completo 
+
+    Given Ao clicar em Buscar 
+    When Anexar Arquivo Procuração Obrigatório
+    Then Deve anexar o arquivo Revogação Obrigatório  
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para o Procurador - "Revogar Procurador na C/C do Cooperado" 
+    Then Clicar em Cancelar Instância 
+    Then Limpar dados de testes
+
+Scenario: isPreExceção = Sim 
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PF
+    When O usuário seleciona o Contexto 1 - "Alterar Diversos Contextos"
+    Then Deve mostrar uma mensagem de encaminhar documentos obrigatórios 
+
+    Given A seleção do Motivo Crédito
+    Then mostrar a mensagem de atendimento com SLA diferenciado
+    Then Cooperativa, Posto preenchidos 
+
+    Given O usuário marcou o checkbox Deseja realizar uma análise prévia de exceção?
+    Then Deve mostrar uma tooltip informativa Esse tipo de solicitação enquadra-se...
+    When Selecionar o Tipo Exeção 
+    Then Preencher a Justificativa Exceção 
+
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
+
+    Given O usuário anexou arquivo Ficha de Dados Cadastrais Obrigatório
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+
+    Given O usuário Assumiu a atividade e analisou a solicitação e validou os dados 
+    When Aprovar Solicitação 
+    Then Deve encaminhar para a tarefa Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário validou se os campos estão com preenchimento correto 
+    When O usuário anexar os documentos obrigatórios para Associação 
+    Then O usuário deve Clicar em Encaminhar Solicitação
+
+    Given O usuário	Assumiu Atividade  
+    When O usuário validar os Arquivos anexados para isPreExceção
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: isExceção = Sim 
+
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PJ
+    When O usuário seleciona o Contexto 2 - "Alterar Diversos Contextos"
+    Then Deve mostrar uma mensagem de encaminhar documentos obrigatórios 
+
+    Given A seleção do Motivo Crédito
+    Then mostrar a mensagem de atendimento com SLA diferenciado
+    Then Cooperativa, Posto preenchidos
+
+    Given O usuário marcou o checkbox Solicitação possui alguma exceção? 
+    When Selecionar o Tipo Exeção 
+    Then Preencher a Justificativa Exceção
+
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
+
+    Given O usuário anexou arquivo Ficha de Dados Cadastrais Obrigatório
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+
+    Given O usuário Assumiu a atividade e analisou a solicitação e validou os dados PJ isExceção 
+    When Aprovar Solicitação 
+
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When O usuário validar os Arquivos anexados para isExceção
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: isMediaComprovante = Sim 
+
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Atualização PJ
+    When O usuário seleciona o Contexto 2 - "Alterar Diversos Contextos"
+    Then Deve mostrar uma mensagem de encaminhar documentos obrigatórios 
+
+    Given A seleção do Motivo Crédito
+    Then mostrar a mensagem de atendimento com SLA diferenciado
+    Then Cooperativa, Posto preenchidos
+
+    Given O usuário marcou o checkbox Renda é comprovada através de média de comprovantes?
+    When Validar a mensagem O valor solicitado de média pode ser alterado pelo diretor...
+    Then Preencher o Valor Média Extrato 
+
+    Given O CPF digitado é um CPF cadastrado 
+    When Clicar em Buscar 
+    Then Deve mostrar os dados corretamente 
+    Then Deve mostrar a Profissão, Score Serasa e Risco Serasa 
+
+    Given O usuário anexou arquivo Ficha de Dados Cadastrais Obrigatório
+    When O usuário Clicar em Encaminhar Solicitação 
+    Then Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+
+    Given O usuário Assumiu a atividade e analisou a solicitação e validou os dados PJ isMediaComprovante 
+    When Aprovar Solicitação
+
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When O usuário validar os Arquivos anexados para isExceção
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: isContaEspelho = Sim 
+
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 2 - "Conta Salário"
+    Then Deve habilitar o campo Matricula Empregador
+    Then Deve selecionar automaticamente o Motivo Outros 
+    When O usuário marcar o checkbox Abertura de Conta Espelho?
+    Then Validar o Tooltio para Abertura de Conta Espelho
+
+    Given Cooperativa, Posto preenchidos  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação 
+    Then Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+
+    Given O usuário Assumiu a atividade e analisou a solicitação e validou os dados Cadastro PF isContaEspelho 
+    When Aprovar Solicitação
+
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When O usuário validar os Arquivos anexados para Cadastro PF - Conta Corrente
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Aguardar Retorno da Remessa BB 1 dia
+
+    Given O usuário está localizado em Verificar Retorno Abertura da Conta Espelho
+    When Conta Espelho Aberto
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: Necessita aprovação da Diretoria   
+
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 2 - "Conta Salário"
+    Then Deve habilitar o campo Matricula Empregador
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Conta Salário" 
+    Then O usuário seleciona Necessita de Aprovação da Diretoria 
+
+    Given Direcionou para a atividade Regularizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Encaminhar Novas Informações
+    
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When O usuário validar os Arquivos anexados para Cadastro PF - Conta Corrente 
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: Aprovar com Pendência  
+
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 2 - "Conta Salário"
+    Then Deve habilitar o campo Matricula Empregador
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given O usuário	Assumiu Atividade 
+    When Validar os dados mostrados estão corretos para Cadastro PF - "Conta Salário" 
+    Then O usuário seleciona Aprovar com Pendência  
+
+    Given Foi direcionado para a atividade Verificar Pendências para Finalizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Pendências para Finalização da Solicitação  
+
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When O usuário validar os Arquivos anexados para Cadastro PF - Conta Corrente 
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: Solicitar Mais Informações - Associação, Abertura de Conta ou Atualização Cadastral
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+    Given O usuário selecionou o Objetivo - Cadastro PJ
+    When O usuário seleciona o Contexto 11 - "Vendedor" 
+    Then Selecionar o Motivo 0 - "Campanhas" 
+     
+    Given O usuário marcou o checkbox Deseja realizar uma análise prévia de exceção?
+    Then Deve mostrar uma tooltip informativa Esse tipo de solicitação enquadra-se...
+    When Selecionar o Tipo Exeção 
+    Then Preencher a Justificativa Exceção 
+
+    Given Cooperativa, Posto Selecionados  
+    When Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+    Then Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+
+    Given O usuário Assumiu a atividade e analisou a solicitação e validou os dados para Cadastro PJ 
+    When Solicitar Mais Informações e preencher a justificativa
+
+    Given Direcionou para a atividade Regularizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação
+    Then Encaminhar Novas Informações
+    
+    Given O usuário Assumiu a atividade e analisou a solicitação e validou os dados para Cadastro PJ 
+    When Aprovar Solicitação
+    Then Deve direcionar para Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When  O usuário validar os Arquivos anexados Conta Corrente
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes

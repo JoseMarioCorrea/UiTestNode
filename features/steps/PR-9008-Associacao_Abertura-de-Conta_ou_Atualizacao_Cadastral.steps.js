@@ -124,9 +124,9 @@ Then ('Deve mostrar os dados corretamente', async() => {
 });
 
 Given ('O usuário clicou em Encaminhar Solicitação', async() => {
-    await driver.wait(until.elementLocated(By.name("inpCodPositionArea")), 3000).click();
-    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#controllers > div.alert.alert-info > div > select > option:nth-child(3)"))), 3000).click();
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 3000).click();
+    await driver.wait(until.elementLocated(By.name("inpCodPositionArea")), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#controllers > div.alert.alert-info > div > select > option:nth-child(3)"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000).click();
 });
 
 When ('Os arquivos não estão anexados', async() => {
@@ -2141,4 +2141,2005 @@ When ('O usuário seleciona o Contexto 15 - {string}', async(string) => {
 
 When ('O usuário seleciona o Contexto 16 - {string}', async(string) => {
     await driver.wait(until.elementLocated(By.id("contexto-16")), 3000).click();
+});
+
+When ('Preencher os campos e inserir um CNPJ-CPF incorreto e Clicar em buscar', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35782"))),30000).sendKeys("1234567890");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("btn-buscar"))),30000).click();
+    await driver.sleep(1000);
+});
+
+Then ('Ocorrer o erro informando que o CNPJ-CPF está incorreto', async() => {
+    let alert1 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-title")), 3000);
+    let textAlert1 = await alert1.getText();
+    assert.deepStrictEqual(textAlert1, "Por favor, verifique o valor digitado.");
+    let alert2 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-message")), 3000);
+    let textAlert2 = await alert2.getText();
+    assert.deepStrictEqual(textAlert2, "O CPF/CNPJ informado é inválido");
+    await driver.wait(until.elementLocated(By.css("#toast-container > div > button")), 3000).click();
+}); 
+
+When ('Preencher os campos e inserir um CNPJ-CPF Correto e Clicar em buscar', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35782"))),30000).sendKeys(Key.CONTROL + "a", Key.DELETE);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35782"))),30000).sendKeys("07518199998");
+    await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > select > option:nth-child(2)")),30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35812"))),30000).sendKeys("José Mario Corrêa Santos ");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("btn-buscar"))),30000).click();
+    await driver.sleep(3000);
+});
+
+Then ('Ocorrer uma mensagem informando que o CPF é valido e deve prosseguir com o preencimento', async() => {
+    let alert3 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-title")), 3000);
+    let textAlert3 = await alert3.getText();
+    assert.deepStrictEqual(textAlert3, "Tudo Certo");
+    let alert4 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-message")), 3000);
+    let textAlert4 = await alert4.getText();
+    assert.deepStrictEqual(textAlert4, "CPF/CNPJ validado, prossiga com a solicitação realizando o upload dos documentos na seção de anexos");
+    await driver.wait(until.elementLocated(By.css("#toast-container > div > button")), 3000).click();
+});  
+
+Given ('Existem documentos obrigatórios que devem ser anexados', async() => {
+    await driver.wait(until.elementLocated(By.css("#ContainerAttach > div.box-header > h2")), 3000);
+    //await driver.wait(until.elementLocated(By.id("btn-buscar")), 3000).click();
+
+}); 
+
+When ('Anexar arquivo  Proposta de Admissão e Ficha Matrícula Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(1)")), 30000).click();
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Proposta de Admissão e Ficha Matrícula (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+Then ('Anexar arquivo  Ficha de Dados Cadastrais Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(2)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Ficha de Dados Cadastrais (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+Given ('Anexar arquivo  Documento de identificação Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(4)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Documento de identificação (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+When ('Anexar arquivo  Comprovante de residência endereço Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(6)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Comprovante de residencia endereço (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+Then ('Anexar arquivo  Autorização débito capital conta de terceiros Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(12)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Autorização débito capital conta de terceiros (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+Given ('Anexar arquivo  Serasa Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(15)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Serasa (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+When ('Anexar arquivo  Bacén Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(16)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Bacen (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+Then ('Anexar arquivo  Receita Federal Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(17)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Receita Federal (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);     
+});
+
+Then ('Deve Encaminhar Solicitação', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inpCodPositionArea"))), 30000).click();
+    await driver.wait(until.elementLocated(By.css("#controllers > div.alert.alert-info > div > select > option:nth-child(2)")), 30000).click();
+    await driver.wait(until.elementLocated(By.id("customBtn_Solicitação Encaminhada")), 30000).click();
+    
+});
+
+Given ('O usuário selecionou o Objetivo - Cadastro PF', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("objetivo-2"))),30000).click();
+});
+
+When('Validar os dados mostrados estão corretos para Cadastro PF - {string}', async (string) => {
+    //Objetivo
+    let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+    let resutadoObjetivo = await objetivo.getText();
+    assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+    let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+    let resultadoCadastroPF = await cadastroPF.getText();
+    assert.deepStrictEqual(resultadoCadastroPF, "Cadastro PF");
+    //Cooperativa 
+    let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+    let resultadoCooperativa = await cooperativa.getText();
+    assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+    let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+    let resultadoCooperativa0515 = await cooperativa0515.getText();
+    assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+    //Posto
+    let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+    let resultadoPosto = await posto.getText();
+    assert.deepStrictEqual(resultadoPosto, "Posto");
+    let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+    let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+    assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+    //Contexto 
+    let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+    let resultadoContexto = await contexto.getText();
+    assert.deepStrictEqual(resultadoContexto, "Contexto");
+    let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+    let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+    assert.deepStrictEqual(resultadoAssociadoApenasMatricula, (string));
+    //CPF/CNPJ 
+    let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+    let resultadoCpf = await cpf.getText();
+    assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+    let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+    let resultadoNumeroCpf = await numeroCpf.getText();
+    assert.deepStrictEqual(resultadoNumeroCpf, "07518199998");
+    let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+    let resultadoMotivo = await motivo.getText();
+    assert.deepStrictEqual(resultadoMotivo, "Motivo");
+    //Nome Completo 
+    let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+    let resultadoNomeCompleto = await nomeCompleto.getText();
+    assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+    let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+    let resultadoNome = await nome.getText();
+    assert.deepStrictEqual(resultadoNome, "José Mario Corrêa Santos");
+
+    let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+    let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+    assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+    //É Cadastro Digital 
+    let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+    let resultadoCadastroDigital = await cadastrodigital.getText();
+    assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+    let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+    let resultadoSim = await sim.getText();
+    assert.deepStrictEqual(resultadoSim, "Não");
+    //É Media Comprovante?
+    let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+    let resultadoMediaComprovante = await mediacomprovante.getText();
+    assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+    let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+    let resultadoSimComprovante = await simComprovante.getText();
+    assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+    //É uma pré exceção?
+    let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+    let resultadoPreExcecao = await preExcecao.getText();
+    assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+    let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+    let resultadoSimPreExcecao = await simPreExcecao.getText();
+    assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+    //Conta aberta com procuração?
+    let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+    let resultadocontaProcuracao = await contaProcuracao.getText();
+    assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+    let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+    let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+    assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+    //Tem exceção 
+    let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+    let resultadotemexcecao = await temexcecao.getText();
+    assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+    let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+    let resultadosimTemexcecao = await simTemexcecao.getText();
+    assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+    //É Conta espelho
+    let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+    let resultadocontaEspelho = await contaEspelho.getText();
+    assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+    let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+    let resultadosimcontaEspelho = await simcontaEspelho.getText();
+    assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+     //É Reingresso?
+     let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+     let resultadoreingresso = await reingresso.getText();
+     assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+     let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+     let resultadosimreingresso = await simreingresso.getText();
+     assert.deepStrictEqual(resultadosimreingresso, "Não");
+     //Valor Média Extrato
+     let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+     let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+     assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Média Extrato");
+     await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > input")), 3000);
+     // Score Serasa 
+     let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+     let resultadoscoreserasa = await scoreserasa.getText();
+     assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+     let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+     let resultadosimscoreserasa = await simscoreserasa.getText();
+     assert.deepStrictEqual(resultadosimscoreserasa, "");
+     // Risco Serasa 
+     let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+     let resultadoriscoserasa = await riscoserasa.getText();
+     assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+     let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+     let resultadosimriscoserasa = await simriscoserasa.getText();
+     assert.deepStrictEqual(resultadosimriscoserasa, "");
+});
+
+Then ('Deve habilitar o campo Matricula Empregador', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35798"))), 30000).sendKeys("12017");
+});
+
+When ('Anexar arquivo  Cartão Autografo', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(11)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Cartão autógrafo (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Anexar arquivo  Proposta de Adesão de Produtos e Serviços Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(3)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Proposta de Adesão de Produtos e Serviços (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(2000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Anexar arquivo Cartão autógrafo Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(11)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Cartão autógrafo (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(3000);
+    await driver.switchTo().frame(4);
+});
+
+Given ('O usuário selecionou o Objetivo - Cadastro PJ', async() => {
+    await driver.wait(until.elementLocated(By.id("objetivo-3")), 300000).click();
+});
+
+When('Validar os dados mostrados estão corretos para Cadastro PJ - {string}', async (string) => {
+    //Objetivo
+    let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+    let resutadoObjetivo = await objetivo.getText();
+    assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+    let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+    let resultadoCadastroPF = await cadastroPF.getText();
+    assert.deepStrictEqual(resultadoCadastroPF, "Cadastro PJ");
+    //Cooperativa 
+    let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+    let resultadoCooperativa = await cooperativa.getText();
+    assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+    let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+    let resultadoCooperativa0515 = await cooperativa0515.getText();
+    assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+    //Posto
+    let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+    let resultadoPosto = await posto.getText();
+    assert.deepStrictEqual(resultadoPosto, "Posto");
+    let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+    let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+    assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+    //Contexto 
+    let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+    let resultadoContexto = await contexto.getText();
+    assert.deepStrictEqual(resultadoContexto, "Contexto");
+    let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+    let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+    assert.deepStrictEqual(resultadoAssociadoApenasMatricula, (string));
+    //CPF/CNPJ 
+    let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+    let resultadoCpf = await cpf.getText();
+    assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+    let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+    let resultadoNumeroCpf = await numeroCpf.getText();
+    assert.deepStrictEqual(resultadoNumeroCpf, "00717799000131");
+    let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+    let resultadoMotivo = await motivo.getText();
+    assert.deepStrictEqual(resultadoMotivo, "Motivo");
+    //Nome Completo 
+    let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+    let resultadoNomeCompleto = await nomeCompleto.getText();
+    assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+    let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+    let resultadoNome = await nome.getText();
+    assert.deepStrictEqual(resultadoNome, "LAPRODENTE LABORATORIO DE PROTESE DENTARIA LTDA ME");
+
+    let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+    let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+    assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+    //É Cadastro Digital 
+    let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+    let resultadoCadastroDigital = await cadastrodigital.getText();
+    assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+    let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+    let resultadoSim = await sim.getText();
+    assert.deepStrictEqual(resultadoSim, "Não");
+    //É Media Comprovante?
+    let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+    let resultadoMediaComprovante = await mediacomprovante.getText();
+    assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+    let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+    let resultadoSimComprovante = await simComprovante.getText();
+    assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+    //É uma pré exceção?
+    let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+    let resultadoPreExcecao = await preExcecao.getText();
+    assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+    let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+    let resultadoSimPreExcecao = await simPreExcecao.getText();
+    assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+    //Conta aberta com procuração?
+    let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+    let resultadocontaProcuracao = await contaProcuracao.getText();
+    assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+    let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+    let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+    assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+    //Tem exceção 
+    let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+    let resultadotemexcecao = await temexcecao.getText();
+    assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+    let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+    let resultadosimTemexcecao = await simTemexcecao.getText();
+    assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+    //É Conta espelho
+    let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+    let resultadocontaEspelho = await contaEspelho.getText();
+    assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+    let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+    let resultadosimcontaEspelho = await simcontaEspelho.getText();
+    assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+     //É Reingresso?
+     let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+     let resultadoreingresso = await reingresso.getText();
+     assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+     let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+     let resultadosimreingresso = await simreingresso.getText();
+     assert.deepStrictEqual(resultadosimreingresso, "Não");
+     //Valor Média Extrato
+     let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+     let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+     assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Média Extrato");
+     await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > input")), 3000);
+     // Score Serasa 
+     let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+     let resultadoscoreserasa = await scoreserasa.getText();
+     assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+     let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+     let resultadosimscoreserasa = await simscoreserasa.getText();
+     assert.deepStrictEqual(resultadosimscoreserasa, "");
+     // Risco Serasa 
+     let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+     let resultadoriscoserasa = await riscoserasa.getText();
+     assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+     let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+     let resultadosimriscoserasa = await simriscoserasa.getText();
+     assert.deepStrictEqual(resultadosimriscoserasa, "");
+});
+
+
+Given ('Anexar arquivo  Cartão CNPJ Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(4)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Cartão CNPJ (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Anexar arquivo  Contrato Social ou Estatuto Social de constituição e alterações Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(9)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Contrato Social ou Estatuto Social de constituição e alterações (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Anexar arquivo Certidões de Verificação de Situação de Contratos Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(11)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Certidões de verificação de situação de contrato (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Anexar arquivo de Cartão autógrafo Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(13)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Cartão autógrafo (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Given ('Anexar arquivo do Serasa Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(23)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Serasa (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+When ('Anexar arquivo do Bacén Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(24)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Bacen (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Anexar arquivo da Receita Federal Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(25)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Receita Federal (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+When ('Anexar arquivo   Comprovante de endereço Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(5)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Comprovante de residencia endereço (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+ 
+When ('Validar os dados mostrados estão corretos para o Cadastro PJ - {string}', async(string) => {
+    //Objetivo
+    let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+    let resutadoObjetivo = await objetivo.getText();
+    assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+    let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+    let resultadoCadastroPF = await cadastroPF.getText();
+    assert.deepStrictEqual(resultadoCadastroPF, "Cadastro PJ");
+    //Cooperativa 
+    let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+    let resultadoCooperativa = await cooperativa.getText();
+    assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+    let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+    let resultadoCooperativa0515 = await cooperativa0515.getText();
+    assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+    //Posto
+    let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+    let resultadoPosto = await posto.getText();
+    assert.deepStrictEqual(resultadoPosto, "Posto");
+    let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+    let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+    assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+    //Contexto 
+    let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+    let resultadoContexto = await contexto.getText();
+    assert.deepStrictEqual(resultadoContexto, "Contexto");
+    let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+    let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+    assert.deepStrictEqual(resultadoAssociadoApenasMatricula, (string));
+    //CPF/CNPJ 
+    let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+    let resultadoCpf = await cpf.getText();
+    assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+    let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+    let resultadoNumeroCpf = await numeroCpf.getText();
+    assert.deepStrictEqual(resultadoNumeroCpf, "07518199998");
+    let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+    let resultadoMotivo = await motivo.getText();
+    assert.deepStrictEqual(resultadoMotivo, "Motivo");
+    //Nome Completo 
+    let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+    let resultadoNomeCompleto = await nomeCompleto.getText();
+    assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+    let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+    let resultadoNome = await nome.getText();
+    assert.deepStrictEqual(resultadoNome, "José Mario Corrêa Santos");
+
+    let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+    let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+    assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+    //É Cadastro Digital 
+    let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+    let resultadoCadastroDigital = await cadastrodigital.getText();
+    assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+    let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+    let resultadoSim = await sim.getText();
+    assert.deepStrictEqual(resultadoSim, "Não");
+    //É Media Comprovante?
+    let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+    let resultadoMediaComprovante = await mediacomprovante.getText();
+    assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+    let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+    let resultadoSimComprovante = await simComprovante.getText();
+    assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+    //É uma pré exceção?
+    let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+    let resultadoPreExcecao = await preExcecao.getText();
+    assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+    let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+    let resultadoSimPreExcecao = await simPreExcecao.getText();
+    assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+    //Conta aberta com procuração?
+    let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+    let resultadocontaProcuracao = await contaProcuracao.getText();
+    assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+    let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+    let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+    assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+    //Tem exceção 
+    let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+    let resultadotemexcecao = await temexcecao.getText();
+    assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+    let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+    let resultadosimTemexcecao = await simTemexcecao.getText();
+    assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+    //É Conta espelho
+    let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+    let resultadocontaEspelho = await contaEspelho.getText();
+    assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+    let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+    let resultadosimcontaEspelho = await simcontaEspelho.getText();
+    assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+     //É Reingresso?
+     let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+     let resultadoreingresso = await reingresso.getText();
+     assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+     let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+     let resultadosimreingresso = await simreingresso.getText();
+     assert.deepStrictEqual(resultadosimreingresso, "Não");
+     //Valor Média Extrato
+     let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+     let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+     assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Média Extrato");
+     await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > input")), 3000);
+     // Score Serasa 
+     let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+     let resultadoscoreserasa = await scoreserasa.getText();
+     assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+     let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+     let resultadosimscoreserasa = await simscoreserasa.getText();
+     assert.deepStrictEqual(resultadosimscoreserasa, "");
+     // Risco Serasa 
+     let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+     let resultadoriscoserasa = await riscoserasa.getText();
+     assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+     let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+     let resultadosimriscoserasa = await simriscoserasa.getText();
+     assert.deepStrictEqual(resultadosimriscoserasa, "");
+}); 
+
+Then ('Deve mostrar uma mensagem informando que o CNPJ já está cadastrado', async() => {
+    let alert4 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-message")), 3000);
+    let textAlert4 = await alert4.getText();
+    assert.deepStrictEqual(textAlert4, "Esse já CNPJ possui cadastro nessa cooperativa. Altere o objetivo da solicitação para atualização.");
+    await driver.wait(until.elementLocated(By.css("#toast-container > div > button")), 3000).click();
+});
+
+Then ('Cooperativa, Posto Selecionados', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35793"))),30000).click();
+    await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > select > option:nth-child(17)")),30000).click();
+    await driver.sleep(1000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35795"))),30000).click();
+    await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > select > option:nth-child(2)")),30000).click();
+});
+
+Given ('O CNPJ digitado já está cadastrado', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35782"))), 3000).sendKeys("00717799000131");
+});
+
+When ('Anexar arquivo  Ata de eleição ou de posse Diretoria e ou Síndico Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(10)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Ata de eleição ou de posse Diretoria eou Síndico (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Deve aparecer uma mensagem informando o envio de relação de faturamento', async() => {
+    let alert1 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-title")), 30000);
+    let textAlert1 = await alert1.getText();
+    assert.deepStrictEqual(textAlert1, "ATENÇÃO!");
+    let alert2 = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-message")), 30000);
+    let textAlert2 = await alert2.getText();
+    assert.deepStrictEqual(textAlert2, "O envio da relação de faturamento é obrigatório para empresas com mais de 90 dias de constituição. Empresas recém constituídas (máximo 90 dias de início das atividades) o faturamento não será obrigatório. Informar no fluxo a ausência de faturamento.");
+    await driver.wait(until.elementLocated(By.css("#toast-container > div > button")), 3000).click();
+});
+
+Given ('O usuário selecionou o Objetivo - Procurador', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("objetivo-4"))), 30000).click();
+});
+
+When ('Preenchido a Conta do Outorgante', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35799"))), 30000).sendKeys("57843");
+}); 
+
+Then ('Preencher CPF Procurador e o Nome Completo', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35782"))), 30000).sendKeys("01819827062");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35812"))), 30000).sendKeys("José Mario Corrêa Santos");
+});
+
+Given ('Ao clicar em Buscar', async() => {
+    await driver.wait(until.elementLocated(By.id("btn-buscar")), 30000).click();
+    //await driver.sleep(50000);
+}); 
+
+When ('Anexar Arquivo Procuração Obrigatório', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(6)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Procuração (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});
+
+Then ('Deve anexar o arquivo Revogação Obrigatório', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(7)"))), 3000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Revogação (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+});  
+
+When ('Validar os dados mostrados estão corretos para o Procurador - {string}', async(string) => {
+    //Objetivo
+    let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+    let resutadoObjetivo = await objetivo.getText();
+    assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+    let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+    let resultadoCadastroPF = await cadastroPF.getText();
+    assert.deepStrictEqual(resultadoCadastroPF, "Procurador");
+    //Cooperativa 
+    let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+    let resultadoCooperativa = await cooperativa.getText();
+    assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+    let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+    let resultadoCooperativa0515 = await cooperativa0515.getText();
+    assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+    //Posto
+    let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+    let resultadoPosto = await posto.getText();
+    assert.deepStrictEqual(resultadoPosto, "Posto");
+    let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+    let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+    assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+    //Contexto 
+    let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+    let resultadoContexto = await contexto.getText();
+    assert.deepStrictEqual(resultadoContexto, "Contexto");
+    let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+    let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+    assert.deepStrictEqual(resultadoAssociadoApenasMatricula, (string));
+    //CPF/CNPJ 
+    let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+    let resultadoCpf = await cpf.getText();
+    assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+    let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+    let resultadoNumeroCpf = await numeroCpf.getText();
+    assert.deepStrictEqual(resultadoNumeroCpf, "01819827062");
+    let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+    let resultadoMotivo = await motivo.getText();
+    assert.deepStrictEqual(resultadoMotivo, "Motivo");
+    //Nome Completo 
+    let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+    let resultadoNomeCompleto = await nomeCompleto.getText();
+    assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+    let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+    let resultadoNome = await nome.getText();
+    assert.deepStrictEqual(resultadoNome, "José Mario Corrêa Santos");
+
+    let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+    let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+    assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+    //É Cadastro Digital 
+    let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+    let resultadoCadastroDigital = await cadastrodigital.getText();
+    assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+    let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+    let resultadoSim = await sim.getText();
+    assert.deepStrictEqual(resultadoSim, "Não");
+    //É Media Comprovante?
+    let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+    let resultadoMediaComprovante = await mediacomprovante.getText();
+    assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+    let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+    let resultadoSimComprovante = await simComprovante.getText();
+    assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+    //É uma pré exceção?
+    let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+    let resultadoPreExcecao = await preExcecao.getText();
+    assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+    let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+    let resultadoSimPreExcecao = await simPreExcecao.getText();
+    assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+    //Conta aberta com procuração?
+    let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+    let resultadocontaProcuracao = await contaProcuracao.getText();
+    assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+    let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+    let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+    assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+    //Tem exceção 
+    let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+    let resultadotemexcecao = await temexcecao.getText();
+    assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+    let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+    let resultadosimTemexcecao = await simTemexcecao.getText();
+    assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+    //É Conta espelho
+    let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+    let resultadocontaEspelho = await contaEspelho.getText();
+    assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+    let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+    let resultadosimcontaEspelho = await simcontaEspelho.getText();
+    assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+     //É Reingresso?
+     let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+     let resultadoreingresso = await reingresso.getText();
+     assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+     let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+     let resultadosimreingresso = await simreingresso.getText();
+     assert.deepStrictEqual(resultadosimreingresso, "Não");
+     //Valor Média Extrato
+     let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+     let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+     assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Média Extrato");
+     await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > input")), 3000);
+     // Score Serasa 
+     let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+     let resultadoscoreserasa = await scoreserasa.getText();
+     assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+     let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+     let resultadosimscoreserasa = await simscoreserasa.getText();
+     assert.deepStrictEqual(resultadosimscoreserasa, "");
+     // Risco Serasa 
+     let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+     let resultadoriscoserasa = await riscoserasa.getText();
+     assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+     let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+     let resultadosimriscoserasa = await simriscoserasa.getText();
+     assert.deepStrictEqual(resultadosimriscoserasa, "");
+});
+
+Then ('Validar se os anexos estão corretos para Alterar Diversos Contextos', async() => {
+    let anexo = await driver.wait(until.elementLocated(By.css("#ContainerAttach > div > a")), 3000);
+    let selectanexo = await anexo.getAttribute("class");
+    assert.deepStrictEqual(selectanexo, "conferencia-badge-primary");
+});
+
+Given ('O usuário validou os Arquivos anexados', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 3000).click();
+    let anexoAprovacao = await driver.wait(until.elementIsVisible(driver.findElement(By.css("#tab1 > div > div > p"))), 3000);
+    let selectanexoAprovacao = await anexoAprovacao.getText();
+    assert.deepStrictEqual(selectanexoAprovacao, "Ficha de Dados Cadastrais");
+    let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 3000);
+    let selectisclickable = await isclickable.getAttribute("class");
+
+    while (selectisclickable == "badge label-default approveDoc") {
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 3000).click();
+            isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 3000);
+            selectisclickable = await isclickable.getAttribute("class");
+         }   
+});
+
+When ('O botão Aprovar é habilitado e clicado', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("btnApprove"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#cboxLoadedContent > div > div > button.btn.btn-success"))), 3000).click();
+    await driver.sleep(10000);
+}); 
+
+Then ('Deve ir para a atividade de Salvar Documentos e Indexadores no ECM', async() => {
+    await driver.wait(until.elementLocated(By.css("#frm > div.title > h1")), 30000);
+    await driver.switchTo().defaultContent();
+    await driver.wait(until.elementLocated(By.css("#cboxClose")), 30000).click();
+});
+
+Given ('O usuário marcou o checkbox Deseja realizar uma análise prévia de exceção?', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#pre-excecao > div > label"))), 30000).click();
+})
+
+Then ('Deve mostrar uma tooltip informativa Esse tipo de solicitação enquadra-se...', async() => {
+    let mensagemIsPreExcecão = await driver.wait(until.elementLocated(By.css("#pre-excecao > div > label")), 3000);
+    let resultsMensagemIsPreExcecao = await mensagemIsPreExcecão.getAttribute("data-pt-title");
+    assert.deepStrictEqual(resultsMensagemIsPreExcecao, "Esse tipo de solicitação enquadra-se para quando não há todos os documentos em mãos e, necessita de uma aprovação da alçada competente. Após, atividade retorna ao requisitante para que possa, agora, complementar com os demais documentos exigidos pelo Objetivo + Contexto selecionado. Ao enviar entrará na fila do time BackOffice da UBR. Exemplo: Prospect / Cooperado apenas encaminhou composição de renda e, gostaria de saber se a UNICRED aprovaria tal renda antes de encaminhar demais documentos.");
+});
+
+When ('Selecionar o Tipo Exeção', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35787"))), 3000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#infos-excecao > div > div:nth-child(1) > div > select > option:nth-child(2)"))), 3000).click();
+});
+
+Then ('Preencher a Justificativa Exceção', async() => {
+    await driver.wait(until.elementLocated(By.name("inp35786")), 3000).sendKeys("Teste Automatizado");
+});
+
+Then ('Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação', async() => {
+    let analiseDeSolicitacao = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação']`)), 30000);
+    let resultsAnaliseDeSolicitacao = await analiseDeSolicitacao.getText();
+    assert.deepStrictEqual(resultsAnaliseDeSolicitacao, "Analisar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação");
+});
+
+Given ('O usuário Assumiu a atividade e analisou a solicitação e validou os dados', async() => {
+await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
+ //Objetivo
+ let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+ let resutadoObjetivo = await objetivo.getText();
+ assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+ let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+ let resultadoCadastroPF = await cadastroPF.getText();
+ assert.deepStrictEqual(resultadoCadastroPF, "Atualização PF");
+ //Cooperativa 
+ let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+ let resultadoCooperativa = await cooperativa.getText();
+ assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+ let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+ let resultadoCooperativa0515 = await cooperativa0515.getText();
+ assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+ //Posto
+ let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+ let resultadoPosto = await posto.getText();
+ assert.deepStrictEqual(resultadoPosto, "Posto");
+ let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+ let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+ assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+ //Contexto 
+ let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+ let resultadoContexto = await contexto.getText();
+ assert.deepStrictEqual(resultadoContexto, "Contexto");
+ let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+ let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+ assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Alterar Diversos Contextos");
+ //CPF/CNPJ 
+ let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+ let resultadoCpf = await cpf.getText();
+ assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+ let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+ let resultadoNumeroCpf = await numeroCpf.getText();
+ assert.deepStrictEqual(resultadoNumeroCpf, "13031713923");
+ let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+ let resultadoMotivo = await motivo.getText();
+ assert.deepStrictEqual(resultadoMotivo, "Motivo");
+ //Nome Completo 
+ let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+ let resultadoNomeCompleto = await nomeCompleto.getText();
+ assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+ let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+ let resultadoNome = await nome.getText();
+ assert.deepStrictEqual(resultadoNome, "MANUELA WIETHORN JUNQUEIRA");
+
+ let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+ let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+ assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+ //É Cadastro Digital 
+ let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+ let resultadoCadastroDigital = await cadastrodigital.getText();
+ assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+ let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+ let resultadoSim = await sim.getText();
+ assert.deepStrictEqual(resultadoSim, "Não");
+ //É Media Comprovante?
+ let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+ let resultadoMediaComprovante = await mediacomprovante.getText();
+ assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+ let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+ let resultadoSimComprovante = await simComprovante.getText();
+ assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+ //É uma pré exceção?
+ let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+ let resultadoPreExcecao = await preExcecao.getText();
+ assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+ let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+ let resultadoSimPreExcecao = await simPreExcecao.getText();
+ assert.deepStrictEqual(resultadoSimPreExcecao, "Sim");
+ //Conta aberta com procuração?
+ let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+ let resultadocontaProcuracao = await contaProcuracao.getText();
+ assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+ let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+ let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+ assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+ //Tem exceção 
+ let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+ let resultadotemexcecao = await temexcecao.getText();
+ assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+ let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+ let resultadosimTemexcecao = await simTemexcecao.getText();
+ assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+ //É Conta espelho
+ let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+ let resultadocontaEspelho = await contaEspelho.getText();
+ assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+ let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+ let resultadosimcontaEspelho = await simcontaEspelho.getText();
+ assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+  //É Reingresso?
+  let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+  let resultadoreingresso = await reingresso.getText();
+  assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+  let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+  let resultadosimreingresso = await simreingresso.getText();
+  assert.deepStrictEqual(resultadosimreingresso, "Não");
+  //Valor Média Extrato
+  let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+  let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+  assert.deepStrictEqual(resultadovalorMediaExtrato, "");
+  await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > input")), 3000);
+  // Score Serasa 
+  let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+  let resultadoscoreserasa = await scoreserasa.getText();
+  assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+  let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+  let resultadosimscoreserasa = await simscoreserasa.getText();
+  assert.deepStrictEqual(resultadosimscoreserasa, "");
+  // Risco Serasa 
+  let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+  let resultadoriscoserasa = await riscoserasa.getText();
+  assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+  let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+  let resultadosimriscoserasa = await simriscoserasa.getText();
+  assert.deepStrictEqual(resultadosimriscoserasa, "");
+});  
+
+When ('Aprovar Solicitação', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Aprovada"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#cboxLoadedContent > div > div > button.btn.btn-success"))), 30000).click();
+}); 
+
+Then ('Deve encaminhar para a tarefa Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral', async() => {
+    let complementarSolicitacao = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral']`)), 30000);
+    let resultscomplementarSolicitacao = await complementarSolicitacao.getText();
+    assert.deepStrictEqual(resultscomplementarSolicitacao, "Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral");
+});
+
+Given ('O usuário validou se os campos estão com preenchimento correto', async() => {
+ //Objetivo
+ let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+ let resutadoObjetivo = await objetivo.getText();
+ assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+ let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+ let resultadoCadastroPF = await cadastroPF.getText();
+ assert.deepStrictEqual(resultadoCadastroPF, "Atualização PF");
+ //Cooperativa 
+ let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+ let resultadoCooperativa = await cooperativa.getText();
+ assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+ let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+ let resultadoCooperativa0515 = await cooperativa0515.getText();
+ assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+ //Posto
+ let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+ let resultadoPosto = await posto.getText();
+ assert.deepStrictEqual(resultadoPosto, "Posto");
+ let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+ let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+ assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+ //Contexto 
+ let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+ let resultadoContexto = await contexto.getText();
+ assert.deepStrictEqual(resultadoContexto, "Contexto");
+ let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+ let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+ assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Alterar Diversos Contextos");
+ //CPF/CNPJ 
+ let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+ let resultadoCpf = await cpf.getText();
+ assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+ let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+ let resultadoNumeroCpf = await numeroCpf.getText();
+ assert.deepStrictEqual(resultadoNumeroCpf, "13031713923");
+ let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+ let resultadoMotivo = await motivo.getText();
+ assert.deepStrictEqual(resultadoMotivo, "Motivo");
+ //Nome Completo 
+ let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+ let resultadoNomeCompleto = await nomeCompleto.getText();
+ assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+ let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+ let resultadoNome = await nome.getText();
+ assert.deepStrictEqual(resultadoNome, "MANUELA WIETHORN JUNQUEIRA");
+
+ let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+ let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+ assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+ //É Cadastro Digital 
+ let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+ let resultadoCadastroDigital = await cadastrodigital.getText();
+ assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+ let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+ let resultadoSim = await sim.getText();
+ assert.deepStrictEqual(resultadoSim, "Não");
+ //É Media Comprovante?
+ let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+ let resultadoMediaComprovante = await mediacomprovante.getText();
+ assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+ let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+ let resultadoSimComprovante = await simComprovante.getText();
+ assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+ //É uma pré exceção?
+ let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+ let resultadoPreExcecao = await preExcecao.getText();
+ assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+ let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+ let resultadoSimPreExcecao = await simPreExcecao.getText();
+ assert.deepStrictEqual(resultadoSimPreExcecao, "Sim");
+ //Conta aberta com procuração?
+ let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+ let resultadocontaProcuracao = await contaProcuracao.getText();
+ assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+ let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+ let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+ assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+ //Tem exceção 
+ let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+ let resultadotemexcecao = await temexcecao.getText();
+ assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+ let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+ let resultadosimTemexcecao = await simTemexcecao.getText();
+ assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+ //É Conta espelho
+ let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+ let resultadocontaEspelho = await contaEspelho.getText();
+ assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+ let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+ let resultadosimcontaEspelho = await simcontaEspelho.getText();
+ assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+  //É Reingresso?
+  let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+  let resultadoreingresso = await reingresso.getText();
+  assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+  let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+  let resultadosimreingresso = await simreingresso.getText();
+  assert.deepStrictEqual(resultadosimreingresso, "Não");
+  //Valor Média Extrato
+  let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+  let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+  assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Média Extrato");
+  // Score Serasa 
+  let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+  let resultadoscoreserasa = await scoreserasa.getText();
+  assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+  let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+  let resultadosimscoreserasa = await simscoreserasa.getText();
+  assert.deepStrictEqual(resultadosimscoreserasa, "");
+  // Risco Serasa 
+  let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+  let resultadoriscoserasa = await riscoserasa.getText();
+  assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+  let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+  let resultadosimriscoserasa = await simriscoserasa.getText();
+  assert.deepStrictEqual(resultadosimriscoserasa, "");
+  //Informações da exceção 
+  let informacoesDeExcecao =  await driver.wait(until.elementLocated(By.css("#infos-excecao > h5")), 3000);
+  let resultsinformacoesDeExcecao = await informacoesDeExcecao.getText();
+  assert.deepStrictEqual(resultsinformacoesDeExcecao, "Informações da Exceção"); 
+  let tipoDeExcecao =  await driver.wait(until.elementLocated(By.id("div35787")), 3000);
+  let resultstipoDeExcecao = await tipoDeExcecao.getText();
+  assert.deepStrictEqual(resultstipoDeExcecao, "Acatamento Restritivo"); 
+  let justificativaDeExcecao =  await driver.wait(until.elementLocated(By.id("div35786")), 3000);
+  let resultsjustificativaDeExcecao = await justificativaDeExcecao.getText();
+  assert.deepStrictEqual(resultsjustificativaDeExcecao, "Teste Automatizado"); 
+}); 
+
+When ('O usuário anexar os documentos obrigatórios para Associação', async() => {
+    await driver.wait(until.elementLocated(By.css("#customizedUpload > tbody > tr:nth-child(2) > td.col1 > span:nth-child(1)")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(1)
+    await driver.sleep(1000);
+    let fileInput2 = await driver.wait(until.elementLocated(By.name("files[]")), 30000);
+    await fileInput2.sendKeys("C:/Unicred/Uploads/PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral v7/Proposta de Admissão e Ficha Matrícula (Obrigatório).txt");
+    await driver.wait(until.elementLocated(By.css("#frm > div.padded > div.buttons > button")), 30000).click();
+    await driver.sleep(1000);
+    await driver.switchTo().frame(4);
+}); 
+
+Then ('O usuário deve Clicar em Encaminhar Solicitação', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000).click();
+});
+
+When ('O usuário validar os Arquivos anexados para isPreExceção', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 3000).click();
+    let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 3000);
+    let selectisclickable = await isclickable.getAttribute("class");
+
+    while (selectisclickable == "badge label-default approveDoc") {
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 3000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(2) > span")), 3000).click();
+            isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(2) > span")), 3000);
+            selectisclickable = await isclickable.getAttribute("class");
+         }   
+});
+
+Given ('O usuário marcou o checkbox Solicitação possui alguma exceção?', async() => {
+   let isExcecao = await driver.wait(until.elementIsVisible(driver.findElement(By.css("#excecao > div > label"))), 3000);
+   let resultsisExcecao = await isExcecao.getAttribute("data-pt-title");
+   assert.deepStrictEqual(resultsisExcecao, 'Esse tipo de solicitação enquadra-se, quando possui alguma exceção em geral na requisição. Passará, então, por aprovação da alçada competente e depois diretamente para a fila do time BackOffice da UBR. Ao contrário da opção de "prévia de exceção", não retorna ao requisitante após aprovação. Observação: Apenas é possível selecionar uma exceção, mas redija no campo área de texto todas as exceções para fins de documentação em instância.');
+   await driver.wait(until.elementIsVisible(driver.findElement(By.css("#excecao > div > label"))), 3000).click();
+});
+
+Given ('O usuário Assumiu a atividade e analisou a solicitação e validou os dados PJ isExceção', async() => {
+ await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
+ //Objetivo
+ let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+ let resutadoObjetivo = await objetivo.getText();
+ assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+ let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+ let resultadoCadastroPF = await cadastroPF.getText();
+ assert.deepStrictEqual(resultadoCadastroPF, "Atualização PJ");
+ //Cooperativa 
+ let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+ let resultadoCooperativa = await cooperativa.getText();
+ assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+ let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+ let resultadoCooperativa0515 = await cooperativa0515.getText();
+ assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+ //Posto
+ let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+ let resultadoPosto = await posto.getText();
+ assert.deepStrictEqual(resultadoPosto, "Posto");
+ let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+ let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+ assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+ //Contexto 
+ let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+ let resultadoContexto = await contexto.getText();
+ assert.deepStrictEqual(resultadoContexto, "Contexto");
+ let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+ let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+ assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Alterar Diversos Contextos");
+ //CPF/CNPJ 
+ let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+ let resultadoCpf = await cpf.getText();
+ assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+ let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+ let resultadoNumeroCpf = await numeroCpf.getText();
+ assert.deepStrictEqual(resultadoNumeroCpf, "13031713923");
+ let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+ let resultadoMotivo = await motivo.getText();
+ assert.deepStrictEqual(resultadoMotivo, "Motivo");
+ //Nome Completo 
+ let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+ let resultadoNomeCompleto = await nomeCompleto.getText();
+ assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+ let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+ let resultadoNome = await nome.getText();
+ assert.deepStrictEqual(resultadoNome, "MANUELA WIETHORN JUNQUEIRA");
+
+ let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+ let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+ assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+ //É Cadastro Digital 
+ let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+ let resultadoCadastroDigital = await cadastrodigital.getText();
+ assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+ let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+ let resultadoSim = await sim.getText();
+ assert.deepStrictEqual(resultadoSim, "Não");
+ //É Media Comprovante?
+ let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+ let resultadoMediaComprovante = await mediacomprovante.getText();
+ assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+ let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+ let resultadoSimComprovante = await simComprovante.getText();
+ assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+ //É uma pré exceção?
+ let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+ let resultadoPreExcecao = await preExcecao.getText();
+ assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+ let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+ let resultadoSimPreExcecao = await simPreExcecao.getText();
+ assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+ //Conta aberta com procuração?
+ let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+ let resultadocontaProcuracao = await contaProcuracao.getText();
+ assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+ let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+ let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+ assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+ //Tem exceção 
+ let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+ let resultadotemexcecao = await temexcecao.getText();
+ assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+ let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+ let resultadosimTemexcecao = await simTemexcecao.getText();
+ assert.deepStrictEqual(resultadosimTemexcecao, "Sim");
+ //É Conta espelho
+ let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+ let resultadocontaEspelho = await contaEspelho.getText();
+ assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+ let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+ let resultadosimcontaEspelho = await simcontaEspelho.getText();
+ assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+  //É Reingresso?
+  let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+  let resultadoreingresso = await reingresso.getText();
+  assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+  let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+  let resultadosimreingresso = await simreingresso.getText();
+  assert.deepStrictEqual(resultadosimreingresso, "Não");
+  //Valor Média Extrato
+  let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+  let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+  assert.deepStrictEqual(resultadovalorMediaExtrato, "");
+  // Score Serasa 
+  let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+  let resultadoscoreserasa = await scoreserasa.getText();
+  assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+  let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+  let resultadosimscoreserasa = await simscoreserasa.getText();
+  assert.deepStrictEqual(resultadosimscoreserasa, "");
+  // Risco Serasa 
+  let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+  let resultadoriscoserasa = await riscoserasa.getText();
+  assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+  let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+  let resultadosimriscoserasa = await simriscoserasa.getText();
+  assert.deepStrictEqual(resultadosimriscoserasa, "");
+  //Informações da exceção 
+  let informacoesDeExcecao =  await driver.wait(until.elementLocated(By.css("#infos-excecao > h5")), 3000);
+  let resultsinformacoesDeExcecao = await informacoesDeExcecao.getText();
+  assert.deepStrictEqual(resultsinformacoesDeExcecao, "Informações da Exceção"); 
+  let tipoDeExcecao =  await driver.wait(until.elementLocated(By.id("div35787")), 3000);
+  let resultstipoDeExcecao = await tipoDeExcecao.getText();
+  assert.deepStrictEqual(resultstipoDeExcecao, "Acatamento Restritivo"); 
+  let justificativaDeExcecao =  await driver.wait(until.elementLocated(By.id("div35786")), 3000);
+  let resultsjustificativaDeExcecao = await justificativaDeExcecao.getText();
+  assert.deepStrictEqual(resultsjustificativaDeExcecao, "Teste Automatizado"); 
+}); 
+
+Given ('O usuário validou se os campos estão com preenchimento correto os dados PJ isExceção', async() => {
+    //Objetivo
+    let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+    let resutadoObjetivo = await objetivo.getText();
+    assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+    let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+    let resultadoCadastroPF = await cadastroPF.getText();
+    assert.deepStrictEqual(resultadoCadastroPF, "Atualização PJ");
+    //Cooperativa 
+    let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+    let resultadoCooperativa = await cooperativa.getText();
+    assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+    let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+    let resultadoCooperativa0515 = await cooperativa0515.getText();
+    assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+    //Posto
+    let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+    let resultadoPosto = await posto.getText();
+    assert.deepStrictEqual(resultadoPosto, "Posto");
+    let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+    let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+    assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+    //Contexto 
+    let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+    let resultadoContexto = await contexto.getText();
+    assert.deepStrictEqual(resultadoContexto, "Contexto");
+    let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+    let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+    assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Alterar Diversos Contextos");
+    //CPF/CNPJ 
+    let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+    let resultadoCpf = await cpf.getText();
+    assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+    let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+    let resultadoNumeroCpf = await numeroCpf.getText();
+    assert.deepStrictEqual(resultadoNumeroCpf, "13031713923");
+    let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+    let resultadoMotivo = await motivo.getText();
+    assert.deepStrictEqual(resultadoMotivo, "Motivo");
+    //Nome Completo 
+    let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+    let resultadoNomeCompleto = await nomeCompleto.getText();
+    assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+    let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+    let resultadoNome = await nome.getText();
+    assert.deepStrictEqual(resultadoNome, "MANUELA WIETHORN JUNQUEIRA");
+   
+    let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+    let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+    assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+    //É Cadastro Digital 
+    let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+    let resultadoCadastroDigital = await cadastrodigital.getText();
+    assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+    let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+    let resultadoSim = await sim.getText();
+    assert.deepStrictEqual(resultadoSim, "Não");
+    //É Media Comprovante?
+    let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+    let resultadoMediaComprovante = await mediacomprovante.getText();
+    assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+    let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+    let resultadoSimComprovante = await simComprovante.getText();
+    assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+    //É uma pré exceção?
+    let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+    let resultadoPreExcecao = await preExcecao.getText();
+    assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+    let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+    let resultadoSimPreExcecao = await simPreExcecao.getText();
+    assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+    //Conta aberta com procuração?
+    let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+    let resultadocontaProcuracao = await contaProcuracao.getText();
+    assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+    let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+    let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+    assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+    //Tem exceção 
+    let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+    let resultadotemexcecao = await temexcecao.getText();
+    assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+    let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+    let resultadosimTemexcecao = await simTemexcecao.getText();
+    assert.deepStrictEqual(resultadosimTemexcecao, "Sim");
+    //É Conta espelho
+    let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+    let resultadocontaEspelho = await contaEspelho.getText();
+    assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+    let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+    let resultadosimcontaEspelho = await simcontaEspelho.getText();
+    assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+     //É Reingresso?
+     let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+     let resultadoreingresso = await reingresso.getText();
+     assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+     let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+     let resultadosimreingresso = await simreingresso.getText();
+     assert.deepStrictEqual(resultadosimreingresso, "Não");
+     //Valor Média Extrato
+     let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+     let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+     assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Media Extrato");
+     // Score Serasa 
+     let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+     let resultadoscoreserasa = await scoreserasa.getText();
+     assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+     let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+     let resultadosimscoreserasa = await simscoreserasa.getText();
+     assert.deepStrictEqual(resultadosimscoreserasa, "");
+     // Risco Serasa 
+     let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+     let resultadoriscoserasa = await riscoserasa.getText();
+     assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+     let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+     let resultadosimriscoserasa = await simriscoserasa.getText();
+     assert.deepStrictEqual(resultadosimriscoserasa, "");
+     //Informações da exceção 
+     let informacoesDeExcecao =  await driver.wait(until.elementLocated(By.css("#infos-excecao > h5")), 3000);
+     let resultsinformacoesDeExcecao = await informacoesDeExcecao.getText();
+     assert.deepStrictEqual(resultsinformacoesDeExcecao, "Informações da Exceção"); 
+     let tipoDeExcecao =  await driver.wait(until.elementLocated(By.id("div35787")), 3000);
+     let resultstipoDeExcecao = await tipoDeExcecao.getText();
+     assert.deepStrictEqual(resultstipoDeExcecao, "Acatamento Restritivo"); 
+     let justificativaDeExcecao =  await driver.wait(until.elementLocated(By.id("div35786")), 3000);
+     let resultsjustificativaDeExcecao = await justificativaDeExcecao.getText();
+     assert.deepStrictEqual(resultsjustificativaDeExcecao, "Teste Automatizado"); 
+});
+
+When ('O usuário validar os Arquivos anexados para isExceção', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 30000).click();
+    let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 30000);
+    let selectisclickable = await isclickable.getAttribute("class");
+
+    while (selectisclickable == "badge label-default approveDoc") {
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 30000).click();
+            isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div > span")), 30000);
+            selectisclickable = await isclickable.getAttribute("class");
+         }   
+});
+
+Given ('O usuário	Assumiu Atividade de Conferir Informações e Documentos', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Conferir Informações e Documentos']`)), 30000);
+    await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 3000).click();
+    await driver.wait(until.elementLocated(By.css("#toast-container > div > button")), 3000).click();
+});
+
+Given ('O usuário marcou o checkbox Renda é comprovada através de média de comprovantes?', async() => {
+    await driver.wait(until.elementLocated(By.css("#media-comprovante > div > label")), 3000).click();
+});
+
+When ('Validar a mensagem O valor solicitado de média pode ser alterado pelo diretor...', async() => {
+    let mensagemMediaComprovante = await driver.wait(until.elementLocated(By.css("#toast-container > div > div.toast-message")), 3000);
+    let resultsmensagemMediaComprovante = await mensagemMediaComprovante.getText();
+    assert.deepStrictEqual(resultsmensagemMediaComprovante, "O valor solicitado de média pode ser alterado pelo diretor da cooperativa ou alçada competente via instância do processo associação, abertura de conta ou atualização cadastral no INTEGRA");
+});
+
+Then ('Preencher o Valor Média Extrato', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35810"))), 30000).sendKeys("500000");
+});
+
+Then ('Deve mostrar a Profissão, Score Serasa e Risco Serasa', async() => {
+    let riscoSerasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > input")), 3000);
+    let resultsriscoSerasa = await riscoSerasa.getAttribute("value label");
+    //assert.deepStrictEqual(resultsriscoSerasa, "null");
+});
+
+Given ('O usuário Assumiu a atividade e analisou a solicitação e validou os dados PJ isMediaComprovante', async() => {
+ await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
+ //Objetivo
+ let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+ let resutadoObjetivo = await objetivo.getText();
+ assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+ let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+ let resultadoCadastroPF = await cadastroPF.getText();
+ assert.deepStrictEqual(resultadoCadastroPF, "Atualização PJ");
+ //Cooperativa 
+ let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+ let resultadoCooperativa = await cooperativa.getText();
+ assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+ let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+ let resultadoCooperativa0515 = await cooperativa0515.getText();
+ assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+ //Posto
+ let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+ let resultadoPosto = await posto.getText();
+ assert.deepStrictEqual(resultadoPosto, "Posto");
+ let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+ let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+ assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+ //Contexto 
+ let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+ let resultadoContexto = await contexto.getText();
+ assert.deepStrictEqual(resultadoContexto, "Contexto");
+ let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+ let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+ assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Alterar Diversos Contextos");
+ //CPF/CNPJ 
+ let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+ let resultadoCpf = await cpf.getText();
+ assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+ let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+ let resultadoNumeroCpf = await numeroCpf.getText();
+ assert.deepStrictEqual(resultadoNumeroCpf, "13031713923");
+ let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+ let resultadoMotivo = await motivo.getText();
+ assert.deepStrictEqual(resultadoMotivo, "Motivo");
+ let motivocredito = await driver.wait(until.elementLocated(By.css("#div35781")), 3000);
+ let resultadomotivocredito = await motivocredito.getText();
+ assert.deepStrictEqual(resultadomotivocredito, "Crédito");
+ //Nome Completo 
+ let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+ let resultadoNomeCompleto = await nomeCompleto.getText();
+ assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+ let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+ let resultadoNome = await nome.getText();
+ assert.deepStrictEqual(resultadoNome, "MANUELA WIETHORN JUNQUEIRA");
+
+ let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+ let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+ assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+ //É Cadastro Digital 
+ let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+ let resultadoCadastroDigital = await cadastrodigital.getText();
+ assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+ let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+ let resultadoSim = await sim.getText();
+ assert.deepStrictEqual(resultadoSim, "Não");
+ //É Media Comprovante?
+ let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+ let resultadoMediaComprovante = await mediacomprovante.getText();
+ assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+ let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+ let resultadoSimComprovante = await simComprovante.getText();
+ assert.deepStrictEqual(resultadoSimComprovante, "Sim");;
+ //É uma pré exceção?
+ let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+ let resultadoPreExcecao = await preExcecao.getText();
+ assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+ let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+ let resultadoSimPreExcecao = await simPreExcecao.getText();
+ assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+ //Conta aberta com procuração?
+ let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+ let resultadocontaProcuracao = await contaProcuracao.getText();
+ assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+ let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+ let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+ assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+ //Tem exceção 
+ let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+ let resultadotemexcecao = await temexcecao.getText();
+ assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+ let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+ let resultadosimTemexcecao = await simTemexcecao.getText();
+ assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+ //É Conta espelho
+ let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+ let resultadocontaEspelho = await contaEspelho.getText();
+ assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+ let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+ let resultadosimcontaEspelho = await simcontaEspelho.getText();
+ assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+  //É Reingresso?
+  let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+  let resultadoreingresso = await reingresso.getText();
+  assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+  let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+  let resultadosimreingresso = await simreingresso.getText();
+  assert.deepStrictEqual(resultadosimreingresso, "Não");
+  //Valor Média Extrato
+  let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+  let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+  assert.deepStrictEqual(resultadovalorMediaExtrato, "Valor Média Extrato");
+  // Score Serasa 
+  let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+  let resultadoscoreserasa = await scoreserasa.getText();
+  assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+  let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+  let resultadosimscoreserasa = await simscoreserasa.getText();
+  assert.deepStrictEqual(resultadosimscoreserasa, "");
+  // Risco Serasa 
+  let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+  let resultadoriscoserasa = await riscoserasa.getText();
+  assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+  let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+  let resultadosimriscoserasa = await simriscoserasa.getText();
+  assert.deepStrictEqual(resultadosimriscoserasa, "ALTÍSSIMO");
+}); 
+
+When ('O usuário marcar o checkbox Abertura de Conta Espelho?', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#conta-espelho > div > label"))), 30000).click();
+});
+
+Then ('Validar o Tooltio para Abertura de Conta Espelho', async() => {
+    let tooltipContaEspelho = await driver.wait(until.elementLocated(By.css("#conta-espelho > div > label")), 3000);
+    let resultstooltipContaEspelho = await tooltipContaEspelho.getAttribute("data-pt-title");
+    assert.deepStrictEqual(resultstooltipContaEspelho, "Esse tipo de solicitação realizará também, uma abertura de conta no Banco do Brasil, o que possui custo adicional para a Unicred. Por esse motivo passa por aprovação em alçada competente antes de entrar na fila do time BackOffice da UBR.");
+});
+
+Given ('O usuário Assumiu a atividade e analisou a solicitação e validou os dados Cadastro PF isContaEspelho', async() => {
+    await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
+    //Objetivo
+    let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+    let resutadoObjetivo = await objetivo.getText();
+    assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+    let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+    let resultadoCadastroPF = await cadastroPF.getText();
+    assert.deepStrictEqual(resultadoCadastroPF, "Cadastro PF");
+    //Cooperativa 
+    let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+    let resultadoCooperativa = await cooperativa.getText();
+    assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+    let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+    let resultadoCooperativa0515 = await cooperativa0515.getText();
+    assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+    //Posto
+    let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+    let resultadoPosto = await posto.getText();
+    assert.deepStrictEqual(resultadoPosto, "Posto");
+    let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+    let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+    assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+    //Contexto 
+    let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+    let resultadoContexto = await contexto.getText();
+    assert.deepStrictEqual(resultadoContexto, "Contexto");
+    let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+    let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+    assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Conta Salário");
+    //CPF/CNPJ 
+    let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+    let resultadoCpf = await cpf.getText();
+    assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+    let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+    let resultadoNumeroCpf = await numeroCpf.getText();
+    assert.deepStrictEqual(resultadoNumeroCpf, "07518199998");
+    let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+    let resultadoMotivo = await motivo.getText();
+    assert.deepStrictEqual(resultadoMotivo, "Motivo");
+    let motivocredito = await driver.wait(until.elementLocated(By.css("#div35781")), 3000);
+    let resultadomotivocredito = await motivocredito.getText();
+    assert.deepStrictEqual(resultadomotivocredito, "Outros");
+    //Nome Completo 
+    let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+    let resultadoNomeCompleto = await nomeCompleto.getText();
+    assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+    let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+    let resultadoNome = await nome.getText();
+    assert.deepStrictEqual(resultadoNome, "José Mario Corrêa Santos");
+   
+    let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+    let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+    assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+    //É Cadastro Digital 
+    let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+    let resultadoCadastroDigital = await cadastrodigital.getText();
+    assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+    let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+    let resultadoSim = await sim.getText();
+    assert.deepStrictEqual(resultadoSim, "Não");
+    //É Media Comprovante?
+    let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+    let resultadoMediaComprovante = await mediacomprovante.getText();
+    assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+    let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+    let resultadoSimComprovante = await simComprovante.getText();
+    assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+    //É uma pré exceção?
+    let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+    let resultadoPreExcecao = await preExcecao.getText();
+    assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+    let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+    let resultadoSimPreExcecao = await simPreExcecao.getText();
+    assert.deepStrictEqual(resultadoSimPreExcecao, "Não");
+    //Conta aberta com procuração?
+    let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+    let resultadocontaProcuracao = await contaProcuracao.getText();
+    assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+    let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+    let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+    assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+    //Tem exceção 
+    let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+    let resultadotemexcecao = await temexcecao.getText();
+    assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+    let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+    let resultadosimTemexcecao = await simTemexcecao.getText();
+    assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+    //É Conta espelho
+    let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+    let resultadocontaEspelho = await contaEspelho.getText();
+    assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+    let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+    let resultadosimcontaEspelho = await simcontaEspelho.getText();
+    assert.deepStrictEqual(resultadosimcontaEspelho, "Sim");
+     //É Reingresso?
+     let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+     let resultadoreingresso = await reingresso.getText();
+     assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+     let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+     let resultadosimreingresso = await simreingresso.getText();
+     assert.deepStrictEqual(resultadosimreingresso, "Não");
+     //Valor Média Extrato
+     let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+     let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+     assert.deepStrictEqual(resultadovalorMediaExtrato, "");
+     // Score Serasa 
+     let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+     let resultadoscoreserasa = await scoreserasa.getText();
+     assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+     let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+     let resultadosimscoreserasa = await simscoreserasa.getText();
+     assert.deepStrictEqual(resultadosimscoreserasa, "");
+     // Risco Serasa 
+     let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+     let resultadoriscoserasa = await riscoserasa.getText();
+     assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+     let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+     let resultadosimriscoserasa = await simriscoserasa.getText();
+     assert.deepStrictEqual(resultadosimriscoserasa, "");
+}); 
+
+When ('O usuário validar os Arquivos anexados para isContaEspelho', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 30000).click();
+    let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000);
+    let selectisclickable = await isclickable.getAttribute("class");
+
+    while (selectisclickable == "badge label-default approveDoc") {
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(2) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(3) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(4) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(5) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(6) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(7) > span")), 30000).click();
+            await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(8) > span")), 30000).click();
+            isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000);
+            selectisclickable = await isclickable.getAttribute("class");
+         }   
+});
+
+Then ('Deve ir para a atividade de Aguardar Retorno da Remessa BB 1 dia', async() => {
+    let results1 = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Aguardar Retorno da Remessa BB (1 dia)']`)), 6000);
+    let text1 = await results1.getText();    
+    assert.deepStrictEqual(text1, "Aguardar Retorno da Remessa BB (1 dia)");
+    await driver.wait(until.elementLocated(By.id("btnFinish")), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#cboxLoadedContent > div > div > button.btn.btn-success"))), 30000).click(); 
+});
+
+Given ('O usuário está localizado em Verificar Retorno Abertura da Conta Espelho', async() => {
+    let results1 = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Verificar Retorno Abertura da Conta Espelho']`)), 6000);
+    let text1 = await results1.getText();    
+    assert.deepStrictEqual(text1, "Verificar Retorno Abertura da Conta Espelho");
+});
+
+When ('Conta Espelho Aberto', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Conta Espelho Aberta"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#cboxLoadedContent > div > div > button.btn.btn-success"))), 30000).click(); 
+});
+
+Then ('O usuário seleciona Necessita de Aprovação da Diretoria', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Necessita de Aprovação da Diretoria"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+});
+
+Then ('Encaminhar Novas Informações', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Novas Informações Encaminhadas"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+});
+
+When ('O usuário validar os Arquivos anexados para Cadastro PF - Conta Corrente', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 30000).click();
+    let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000);
+    let selectisclickable = await isclickable.getAttribute("class");
+    let isclickable2 = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(2) > span")), 30000);
+    let selectisclickable2 = await isclickable2.getAttribute("class");
+
+    while (selectisclickable == "badge label-default approveDoc") {
+        await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000).click();
+        await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(2) > span")), 30000).click();
+        isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(2) > span")), 30000);
+        selectisclickable = await isclickable.getAttribute("class");
+    }   
+});
+
+Given ('Direcionou para a atividade Regularizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação', async() => {
+    let results1 = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Regularizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação']`)), 60000);
+    let text1 = await results1.getText();    
+    assert.deepStrictEqual(text1, "Regularizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral que Necessita de Aprovação");
+});
+
+Then ('O usuário seleciona Aprovar com Pendência', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Aprovado com Pendência"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+}); 
+
+Given ('Foi direcionado para a atividade Verificar Pendências para Finalizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral', async() => {
+    let results1 = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Verificar Pendência(s) para Finalizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral']`)), 60000);
+    let text1 = await results1.getText();    
+    assert.deepStrictEqual(text1, "Verificar Pendência(s) para Finalizar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral");
+});
+
+Then ('Deve Encaminhar Pendências para Finalização da Solicitação', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Encaminhar Pendências para Finalização da Solicitação"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+}); 
+
+When ('Solicitar Mais Informações', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Mais Informações Solicitadas"))), 300000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 300000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 300000).click();
+});
+
+Given ('O usuário Assumiu a atividade e analisou a solicitação e validou os dados para Cadastro PJ', async() => {
+    await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
+ //Objetivo
+ let objetivo = await driver.wait(until.elementLocated(By.css("#div-objetivo > div > label")), 3000);
+ let resutadoObjetivo = await objetivo.getText();
+ assert.deepStrictEqual(resutadoObjetivo, "Objetivo");
+ let cadastroPF = await driver.wait(until.elementLocated(By.id("div35779")), 3000);
+ let resultadoCadastroPF = await cadastroPF.getText();
+ assert.deepStrictEqual(resultadoCadastroPF, "Cadastro PJ");
+ //Cooperativa 
+ let cooperativa = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(1) > div > label")), 3000);
+ let resultadoCooperativa = await cooperativa.getText();
+ assert.deepStrictEqual(resultadoCooperativa, "Cooperativa");
+ let cooperativa0515 = await driver.wait(until.elementLocated(By.id("div35793")), 3000);
+ let resultadoCooperativa0515 = await cooperativa0515.getText();
+ assert.deepStrictEqual(resultadoCooperativa0515, "0515");
+ //Posto
+ let posto = await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > label")), 3000);
+ let resultadoPosto = await posto.getText();
+ assert.deepStrictEqual(resultadoPosto, "Posto");
+ let unicredValorCapital = await driver.wait(until.elementLocated(By.id("div35795")), 3000);
+ let resultadoUnicredValorCapital = await unicredValorCapital.getText();
+ assert.deepStrictEqual(resultadoUnicredValorCapital, "UNICRED VALOR CAPITAL");
+ //Contexto 
+ let contexto = await driver.wait(until.elementLocated(By.css("#div-contexto > div > label")), 3000);
+ let resultadoContexto = await contexto.getText();
+ assert.deepStrictEqual(resultadoContexto, "Contexto");
+ let AssociadoApenasMatricula = await driver.wait(until.elementLocated(By.id("div35780")), 3000);
+ let resultadoAssociadoApenasMatricula = await AssociadoApenasMatricula.getText();
+ assert.deepStrictEqual(resultadoAssociadoApenasMatricula, "Vendedor");
+ //CPF/CNPJ 
+ let cpf = await driver.wait(until.elementLocated(By.css("#div-cpf-cnpj > label")), 3000);
+ let resultadoCpf = await cpf.getText();
+ assert.deepStrictEqual(resultadoCpf, "CPF/CNPJ");
+ let numeroCpf = await driver.wait(until.elementLocated(By.id("div35782")), 3000);
+ let resultadoNumeroCpf = await numeroCpf.getText();
+ assert.deepStrictEqual(resultadoNumeroCpf, "07518199998");
+ let motivo = await driver.wait(until.elementLocated(By.css("#div-motivo > div > label")), 3000);
+ let resultadoMotivo = await motivo.getText();
+ assert.deepStrictEqual(resultadoMotivo, "Motivo");
+ //Nome Completo 
+ let nomeCompleto = await driver.wait(until.elementLocated(By.css("#div-nome-completo > label")), 3000);
+ let resultadoNomeCompleto = await nomeCompleto.getText();
+ assert.deepStrictEqual(resultadoNomeCompleto, "Nome Completo");
+ let nome = await driver.wait(until.elementLocated(By.id("div35812")), 3000);
+ let resultadoNome = await nome.getText();
+ assert.deepStrictEqual(resultadoNome, "José Mario Corrêa Santos");
+
+ let informacoesAdicionais = await driver.wait(until.elementLocated(By.css("#infos-adicionais > h4")), 3000);
+ let resultadoInformacoesAdicionais = await informacoesAdicionais.getText();
+ assert.deepStrictEqual(resultadoInformacoesAdicionais, "Informações Adicionais");
+ //É Cadastro Digital 
+ let cadastrodigital = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(1) > div > label")), 3000);
+ let resultadoCadastroDigital = await cadastrodigital.getText();
+ assert.deepStrictEqual(resultadoCadastroDigital, "É Cadastro Digital?");
+ let sim = await driver.wait(until.elementLocated(By.id("div35811")), 3000);
+ let resultadoSim = await sim.getText();
+ assert.deepStrictEqual(resultadoSim, "Não");
+ //É Media Comprovante?
+ let mediacomprovante = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(5) > div > label")), 3000);
+ let resultadoMediaComprovante = await mediacomprovante.getText();
+ assert.deepStrictEqual(resultadoMediaComprovante, "É Media Comprovante?");
+ let simComprovante = await driver.wait(until.elementLocated(By.id("div35783")), 3000);
+ let resultadoSimComprovante = await simComprovante.getText();
+ assert.deepStrictEqual(resultadoSimComprovante, "Não");;
+ //É uma pré exceção?
+ let preExcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(2) > div > label")), 3000);
+ let resultadoPreExcecao = await preExcecao.getText();
+ assert.deepStrictEqual(resultadoPreExcecao, "É uma pré exceção?");
+ let simPreExcecao = await driver.wait(until.elementLocated(By.id("div35813")), 3000);
+ let resultadoSimPreExcecao = await simPreExcecao.getText();
+ assert.deepStrictEqual(resultadoSimPreExcecao, "Sim");
+ //Conta aberta com procuração?
+ let contaProcuracao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(6) > div > label")), 3000);
+ let resultadocontaProcuracao = await contaProcuracao.getText();
+ assert.deepStrictEqual(resultadocontaProcuracao, "Conta aberta com procuração?");
+ let simcontaProcuracao = await driver.wait(until.elementLocated(By.id("div35801")), 3000);
+ let resultadosimcontaProcuracao = await simcontaProcuracao.getText();
+ assert.deepStrictEqual(resultadosimcontaProcuracao, "Não");
+ //Tem exceção 
+ let temexcecao = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(3) > div > label")), 3000);
+ let resultadotemexcecao = await temexcecao.getText();
+ assert.deepStrictEqual(resultadotemexcecao, "Tem Exceção?");
+ let simTemexcecao = await driver.wait(until.elementLocated(By.id("div35785")), 3000);
+ let resultadosimTemexcecao = await simTemexcecao.getText();
+ assert.deepStrictEqual(resultadosimTemexcecao, "Não");
+ //É Conta espelho
+ let contaEspelho = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(8) > div > label")), 3000);
+ let resultadocontaEspelho = await contaEspelho.getText();
+ assert.deepStrictEqual(resultadocontaEspelho, "É Conta Espelho?");
+ let simcontaEspelho = await driver.wait(until.elementLocated(By.id("div35802")), 3000);
+ let resultadosimcontaEspelho = await simcontaEspelho.getText();
+ assert.deepStrictEqual(resultadosimcontaEspelho, "Não");
+  //É Reingresso?
+  let reingresso = await driver.wait(until.elementLocated(By.css("#flags > div:nth-child(4) > div > label")), 3000);
+  let resultadoreingresso = await reingresso.getText();
+  assert.deepStrictEqual(resultadoreingresso, "É Reingresso?");
+  let simreingresso = await driver.wait(until.elementLocated(By.id("div35784")), 3000);
+  let resultadosimreingresso = await simreingresso.getText();
+  assert.deepStrictEqual(resultadosimreingresso, "Não");
+  //Valor Média Extrato
+  let valorMediaExtrato = await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > label")), 3000);
+  let resultadovalorMediaExtrato = await valorMediaExtrato.getText();
+  assert.deepStrictEqual(resultadovalorMediaExtrato, "");
+  await driver.wait(until.elementLocated(By.css("#valor-media-extrato > div > input")), 3000);
+  // Score Serasa 
+  let scoreserasa = await driver.wait(until.elementLocated(By.css("#div-score-serasa > label")), 3000);
+  let resultadoscoreserasa = await scoreserasa.getText();
+  assert.deepStrictEqual(resultadoscoreserasa, "Score Serasa");
+  let simscoreserasa = await driver.wait(until.elementLocated(By.id("div35815")), 3000);
+  let resultadosimscoreserasa = await simscoreserasa.getText();
+  assert.deepStrictEqual(resultadosimscoreserasa, "");
+  // Risco Serasa 
+  let riscoserasa = await driver.wait(until.elementLocated(By.css("#div-risco-serasa > label")), 3000);
+  let resultadoriscoserasa = await riscoserasa.getText();
+  assert.deepStrictEqual(resultadoriscoserasa, "Risco Serasa");
+  let simriscoserasa = await driver.wait(until.elementLocated(By.id("div35814")), 3000);
+  let resultadosimriscoserasa = await simriscoserasa.getText();
+  assert.deepStrictEqual(resultadosimriscoserasa, "");
+});
+
+When ('Deve direcionar para Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral', async() => {
+    let results1 = await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral']`)), 60000);
+    let text1 = await results1.getText();    
+    assert.deepStrictEqual(text1, "Complementar Solicitação com os Documentos Obrigatórios de Associação, Abertura de Conta ou Atualização Cadastral");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000).click();
+});
+
+When ('O usuário validar os Arquivos anexados Conta Corrente', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 30000).click();
+    let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000);
+    let selectisclickable = await isclickable.getAttribute("class");
+   
+
+    while (selectisclickable == "badge label-default approveDoc") {
+        await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000).click();
+        isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000);
+        selectisclickable = await isclickable.getAttribute("class");
+    }   
+});
+
+When ('Solicitar Mais Informações e preencher a justificativa', async() => {
+    await driver.wait(until.elementLocated(By.xpath("//*[@id='customBtn_Mais Informações Solicitadas']")), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
 });
