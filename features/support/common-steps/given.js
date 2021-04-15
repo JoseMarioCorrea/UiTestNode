@@ -20,7 +20,7 @@ Given ("O usuário está na tela de busca de processos e Realizar a busca do Pro
     await driver.wait(until.elementIsVisible(driver.findElement(By.css("#filter > div > div.box-header > h3"))), 30000).click();
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsFlowName"))), 30000);
     await driver.wait(until.elementLocated(By.id('inpDsFlowName')), 30000);      
-    await driver.wait(until.elementLocated(By.id("inpDsFlowName")), 30000).sendKeys('PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral', Key.ENTER);        
+    await driver.wait(until.elementLocated(By.id("inpDsFlowName")), 30000).sendKeys(string, Key.ENTER);        
     await driver.wait(until.elementLocated(By.id("inpStDeploy")),30000).click();
     await driver.wait(until.elementLocated(By.css("#inpStDeploy > option:nth-child(2)")), 3000).click();
     await driver.wait(until.elementIsVisible(driver.findElement(By.name("btnPesqFiltro"), 30000))).click();
