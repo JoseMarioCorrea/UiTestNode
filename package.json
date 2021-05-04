@@ -10,12 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chromedriver": "^88.0.0",
     "cucumber": "^7.0.0-rc.0",
     "gulp-install": "^1.1.0",
     "selenium-webdriver": "^4.0.0-beta.1"
   },
   "devDependencies": {
+    "chromedriver": "^90.0.0",
     "cucumberjs-parallel": "^1.2.5"
   }
 }
