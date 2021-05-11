@@ -36,12 +36,12 @@ Scenario: Atualização PF - Alterar Diversos Contextos
     Given O usuário	Assumiu Atividade 
     When Validar os dados mostrados estão corretos 
     Then Clicar em Cancelar Instância 
-    Then Limpar dados de testes 
+    Then inserir a senha "****" no sistema 
     
 Scenario: Atualização PF - Alterar Endereço 
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
     When Realizar o Login "jose.correa" no sistema
-    Then inserir a senha "Unijui2421" no sistema 
+    Then inserir a senha no sistema 
 
     Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
     When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"

@@ -5,7 +5,7 @@ Feature: PR 9008 Assinatura Digital
 Scenario: Realizar a validação do Processo de Assinatura Digial - Adesão de trabalho remoto 
         Given o usuário esta na url "https://bpm.e-unicred.com.br/"
         When Realizar o Login "jose.correa" no sistema
-        Then inserir a senha "Unijui2421" no sistema 
+        Then inserir a senha "****" no sistema 
 
         Given o usuário está no Processo Assinaura Digital 
         When O usuário inicia o teste do Processo de Assinatura Digital 

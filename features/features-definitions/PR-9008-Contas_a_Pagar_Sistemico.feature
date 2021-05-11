@@ -4,7 +4,7 @@ Feature Description
 Scenario: Objetivo - Adiantamento Financeiro
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
     When Realizar o Login "jose.correa" no sistema
-    Then inserir a senha "Unijui2421" no sistema 
+    Then inserir a senha "****" no sistema 
 
     Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Contas a Pagar Sistêmico"
     When Inicia o teste do Processo "PR 9008 - Contas a Pagar Sistêmico"
