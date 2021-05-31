@@ -4143,3 +4143,49 @@ When ('Solicitar Mais Informações e preencher a justificativa', async() => {
     await driver.wait(until.elementIsVisible(driver.findElement(By.css("#inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
 });
+
+When ('Preencher os campos e inserir um CNPJ com Restrição e Clicar em buscar', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35782"))),30000).sendKeys("10333971000107");
+    await driver.wait(until.elementLocated(By.css("#step-2 > div:nth-child(2) > div > select > option:nth-child(2)")),30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.name("inp35812"))),30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("btn-buscar"))),30000).click();
+    await driver.sleep(3000);
+});
+
+Then ('Ocorrer uma mensagem informando que o CNPJ possui Restrição', async() => {
+    let alerta = await driver.wait(until.elementIsVisible(driver.findElement(By.css("#infos-adicionais > div.alert.alert-error"))), 30000).getText();
+    assert.deepStrictEqual(alerta, "O CPF/CNPJ em questão foi encontrado em uma lista de sanções ou alguma lista restritiva. Assim sendo, após encaminhamento da solicitação será gerado uma atividade para o time de PLD da UBR, que emitirá parecer da restrição. O parecer será enviado diretamente para a cooperativa caso a restrição se confirme ou seguirá para as próximas atividades já existentes do processo. Seguem informações: BORGES E SILVA SERVICOS DE CONSULTAS MEDICAS LTDA - 10333971000107, lista: OFAC - SDN");
+});
+
+Given ('Estamos na atividade Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva']`)), 60000);
+});
+
+Then ('O usuário Assumiu Atividade', async() => {
+    await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
+}); 
+
+When ('Clicar em Restrição Confirmada', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Restrição Confirmada"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 3000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 3000).click();
+}); 
+
+Then ('Encaminhar para Verificar Parecer do CPF-CNPJ Identificado em Lista Restritiva', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Verificar Parecer do CPF/CNPJ Identificado em  Lista Restritiva / Sanções de Solicitação de Associação, Abertura de Conta ou Atualização Cadastral']`)), 60000);
+});
+
+When ('Clicar em Restrição Não Confirmada', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Restrição Não Confirmada"))), 3000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#cboxLoadedContent > div > div > button.btn.btn-success"))), 3000).click();
+}); 
+
+When ('Solicitar Mais Informações e ao habilitar preencher a justificativa', async() => {
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Mais Informações Solicitadas"))), 30000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+});
+
+Given ('Retornamos na atividade Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva', async() => {
+    await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva ']`)), 60000);
+});

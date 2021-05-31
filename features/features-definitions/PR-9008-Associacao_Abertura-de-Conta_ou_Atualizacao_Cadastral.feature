@@ -36,12 +36,11 @@ Scenario: Atualização PF - Alterar Diversos Contextos
     Given O usuário	Assumiu Atividade 
     When Validar os dados mostrados estão corretos 
     Then Clicar em Cancelar Instância 
-    Then inserir a senha "****" no sistema 
     
 Scenario: Atualização PF - Alterar Endereço 
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
     When Realizar o Login "jose.correa" no sistema
-    Then inserir a senha no sistema 
+    Then inserir a senha "Unijui2421" no sistema 
 
     Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
     When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
@@ -331,7 +330,7 @@ Scenario: Atualização PF - Incluir Titularidade
     Given O usuário	Assumiu Atividade 
     When Validar os dados mostrados estão corretos para Atualização PF - Incluir Titularidade
     Then Clicar em Cancelar Instância 
-    Then Limpar dados de testes 
+    
 
 Scenario: Atualização PF - Nova CC possui matrícula e CC
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
@@ -1818,7 +1817,7 @@ Scenario: isContaEspelho = Sim
     Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
     Then Limpar dados de testes
 
-Scenario: Necessita aprovação da Diretoria   
+Scenario: Necessita aprovacao da Diretoria   
 
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
     When Realizar o Login "jose.correa" no sistema
@@ -1932,6 +1931,46 @@ Scenario: Solicitar Mais Informações - Associação, Abertura de Conta ou Atua
 
     Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
     When  O usuário validar os Arquivos anexados Conta Corrente
+    When O botão Aprovar é habilitado e clicado
+    Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
+    Then Limpar dados de testes
+
+Scenario: Lista Restretiva   
+
+    Given o usuário esta na url "https://bpm.e-unicred.com.br/"
+    When Realizar o Login "jose.correa" no sistema
+    Then inserir a senha "Unijui2421" no sistema 
+
+    Given O usuário está na tela de busca de processos e Realizar a busca do Processo - "PR 9008 - Associação, Abertura de Conta ou Atualização Cadastral"
+    When Inicia o teste do Processo "Associação, Abertura de Conta ou Atualização Cadastral"
+    Then Deve direcionar para a tela de Iniciar Solicitação de Associação, Abertura de Conta ou Atualização Cadastral
+
+    Given O usuário selecionou o Objetivo - Cadastro PF
+    When O usuário seleciona o Contexto 2 - "Conta Salário"
+    Then Deve habilitar o campo Matricula Empregador
+    Then Deve selecionar automaticamente o Motivo Outros 
+
+    Given Cooperativa, Posto preenchidos 
+    When Preencher os campos e inserir um CNPJ com Restrição e Clicar em buscar
+    Then Ocorrer uma mensagem informando que o CNPJ possui Restrição
+    
+    Given Existem documentos obrigatórios que devem ser anexados 
+    When Anexar arquivo  Cartão Autografo
+    Then Anexar arquivo  Ficha de Dados Cadastrais Obrigatório
+    Then Deve Encaminhar Solicitação  
+
+    Given Estamos na atividade Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva
+    Then O usuário Assumiu Atividade 
+    When Clicar em Restrição Confirmada 
+    Then Encaminhar para Verificar Parecer do CPF-CNPJ Identificado em Lista Restritiva
+
+    Given O usuário	Assumiu Atividade
+    When Solicitar Mais Informações e ao habilitar preencher a justificativa
+    Given Retornamos na atividade Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva
+    When Clicar em Restrição Não Confirmada 
+
+    Given O usuário	Assumiu Atividade de Conferir Informações e Documentos
+    When O usuário validar os Arquivos anexados para Cadastro PF - Conta Corrente 
     When O botão Aprovar é habilitado e clicado
     Then Deve ir para a atividade de Salvar Documentos e Indexadores no ECM
     Then Limpar dados de testes

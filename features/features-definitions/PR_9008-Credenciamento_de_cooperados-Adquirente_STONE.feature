@@ -1,7 +1,7 @@
 Feature: PR 9008 - Credenciamento de cooperados - Adquirente STONE
 
 Feature Description
-Scenario: Formulário
+Scenario: Formulário - Stone
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"
     When Realizar o Login "jose.correa" no sistema
     Then inserir a senha "****" no sistema 
