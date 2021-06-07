@@ -233,18 +233,19 @@ Given ('Estamos localizados na atividade Coletar Assinatura nos Templates Gerado
 
 When ('Validar o template Solicitacao Demissao Pagamentos', async() => {
     //Clica no botão para abrir arquivo
-    await driver.wait(until.elementLocated(By.css("#div36673 > a:nth-child(1) > button")), 3000).click()
+    await driver.wait(until.elementLocated(By.css("#div36673 > a:nth-child(1) > button")), 3000).click();
     await driver.sleep(3000);
     
     //Verifica se Arquivo já está criado 
-    let naoencontra = await driver.wait(until.elementLocated(By.css("head > title")),3000).getText();
+    let naoencontra = await driver.wait(until.elementIsVisible(driver.findElement(By.css("body > div.padded > small"))),3000).getText();
 
-    while (naoencontra == "") 
+    while (naoencontra != "") 
     {
-        await driver.wait(until.elementLocated(By.css("#cboxClose")), 3000).click()
-        await driver.wait(until.elementLocated(By.css("#div36673 > a:nth-child(1) > button")), 3000).click()
+        await driver.wait(until.elementLocated(By.xpath('//*[@id="cboxClose"]')), 300000).click();
+        //await driver.switchTo().frame(4);
+        await driver.wait(until.elementLocated(By.css("#div36673 > a:nth-child(1) > button")), 3000).click();
         await driver.sleep(3000);
-        naoencontra = await driver.wait(until.elementLocated(By.css("head > title")),3000).getText();
+        naoencontra = await driver.wait(until.elementLocated(driver.findElement(By.css("body > div.padded > small"))),3000).getText();
     }  
 
     //Tira Screenshot do template e eu valido Manualmente se está gerado Correto
