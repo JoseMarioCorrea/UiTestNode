@@ -202,6 +202,9 @@ Given ('Estamos localizados na atividade Analisar entrada do cooperado', async()
 
 Then ('Clicar em Rejeitar entrada de Cooperado e finalizar o teste', async() => {
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Rejeitar Cadastro"))), 3000).click();
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css("#inpDsReasonInputReason"))), 30000).sendKeys("teste");
+    await driver.wait(until.elementLocated(By.id("BtnConfirmReason")), 30000).click();
 });
 
 Then ('Validar se o botão Aprovar é habilitado após marcar o check List', async() => {
