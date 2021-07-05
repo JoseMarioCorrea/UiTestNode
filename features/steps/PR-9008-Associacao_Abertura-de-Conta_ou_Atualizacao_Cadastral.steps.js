@@ -4161,10 +4161,6 @@ Given ('Estamos na atividade Analisar Solicitação de Associação ou Abertura 
     await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Analisar Solicitação de Associação ou Abertura de Conta que Enquadrou-se em Lista Restritiva']`)), 60000);
 });
 
-Then ('O usuário Assumiu Atividade', async() => {
-    await driver.wait(until.elementLocated(By.id("claim-unclaim-task")), 50000).click();
-}); 
-
 When ('Clicar em Restrição Confirmada', async() => {
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Restrição Confirmada"))), 30000).click();
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 3000).sendKeys("Teste Automatizado");
