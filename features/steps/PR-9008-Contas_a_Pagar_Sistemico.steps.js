@@ -911,13 +911,6 @@ When ('Anexar o Comprovante de Ressarcimento', async() => {
     await driver.switchTo().frame(4);
 });
 
-Then ('Clicar em Solicitar Mais Informações', async() => {
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Mais Informações Solicitadas"))), 3000).click();
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado, vai para gerar Nota Fiscal");
-    await driver.sleep(2000);
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
-});
-
 Given ('Estamos localizado em Regularizar Pendências', async() => {
     await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Regularizar Pendência(s)']`)), 60000);  
 }); 

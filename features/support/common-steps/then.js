@@ -13,3 +13,11 @@ Then('inserir a senha {string} no sistema', async (string) => {
 
     return input;
 });
+
+Then ('Clicar em Solicitar Mais Informações', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Mais Informações Solicitadas"))), 3000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado, vai para gerar Nota Fiscal");
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+});
