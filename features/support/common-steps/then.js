@@ -9,7 +9,7 @@ Then('inserir a senha {string} no sistema', async (string) => {
     const driver = global.driver;
 
     let input = await driver.wait(until.elementLocated(By.id('TxtPassword')), 3000);  
-    await input.sendKeys("uNIJUI2421", Key.RETURN);
+    await input.sendKeys("Bernardo2017", Key.RETURN);
 
     return input;
 });

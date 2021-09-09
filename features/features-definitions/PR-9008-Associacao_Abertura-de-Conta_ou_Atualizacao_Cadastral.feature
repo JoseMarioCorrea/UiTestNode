@@ -1061,8 +1061,7 @@ Scenario: Cadastro PF - Matrícula e CC Individual
 
     Given O usuário	Assumiu Atividade 
     When Validar os dados mostrados estão corretos para Cadastro PF - "Matrícula e C/C Individual" 
-    Then Clicar em Cancelar Instância 
-    Then Limpar dados de testes 
+    
 
 Scenario: Cadastro PF - Matrícula e CC para Menores de Idade
     Given o usuário esta na url "https://bpm.e-unicred.com.br/"

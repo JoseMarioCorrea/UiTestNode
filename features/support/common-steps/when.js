@@ -62,6 +62,7 @@ When ('Localizar a instância iniciada através do Post na API o teste do Proces
 });
 
 When ('O usuário Assumiu Atividade', async() => {
+    await driver.sleep(1500);
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("claim-unclaim-task"))), 30000).click();
 });
 
