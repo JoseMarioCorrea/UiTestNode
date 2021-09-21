@@ -1,7 +1,6 @@
 {
   "name": "SeleniumNode",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,5 +16,14 @@
   "devDependencies": {
     "chromedriver": "^90.0.1",
     "cucumberjs-parallel": "^1.2.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseMarioCorrea/UiTestNode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoseMarioCorrea/UiTestNode/issues"
+  },
+  "homepage": "https://github.com/JoseMarioCorrea/UiTestNode#readme",
+  "description": ""
 }

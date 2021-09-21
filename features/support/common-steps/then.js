@@ -21,3 +21,15 @@ Then ('Clicar em Solicitar Mais Informações', async() => {
     await driver.sleep(2000);
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
 });
+
+Then ('Encaminhar Solicitação', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 30000).click();
+    await driver.sleep(2000);
+});
+
+Then ('clicar em Aprovar a Solicitação', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Aprovada"))), 3000).click();
+    await driver.sleep(2000);
+});

@@ -310,10 +310,6 @@ Given ('Os dados de TEF POS foram válidados', async() => {
     assert.deepStrictEqual(valorAluguel, "60.00");   
 });
 
-Then ('Encaminhar Solicitação', async() => {
-    await driver.wait(until.elementLocated(By.id("customBtn_Solicitação Encaminhada")), 3000).click();
-}); 
-
 Given ('O usuário esta localizado em Aguardar Análise da Solicitação de Domicílio Bancário STONE', async() => {
     await driver.wait(until.elementLocated(By.xpath(`//*[@id="frm"]/div[10]/h1[text() = 'Aguardar Análise da Solicitação de Domicílio Bancário STONE']`)), 60000);  
 });
