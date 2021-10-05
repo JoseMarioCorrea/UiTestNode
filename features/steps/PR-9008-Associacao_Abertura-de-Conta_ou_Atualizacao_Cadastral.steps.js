@@ -3946,12 +3946,6 @@ Then ('O usuário seleciona Necessita de Aprovação da Diretoria', async() => {
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
 });
 
-Then ('Encaminhar Novas Informações', async() => {
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Novas Informações Encaminhadas"))), 30000).click();
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado");
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
-});
-
 When ('O usuário validar os Arquivos anexados para Cadastro PF - Conta Corrente', async() => {
     await driver.wait(until.elementIsVisible(driver.findElement(By.css("#btnsFormalization > span:nth-child(2)"))), 30000).click();
     let isclickable = await driver.wait(until.elementLocated(By.css("#tab1 > div > div:nth-child(1) > span")), 30000);

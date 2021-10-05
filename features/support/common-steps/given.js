@@ -21,11 +21,11 @@ Given ("O usuário está na tela de busca de processos e Realizar a busca do Pro
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsFlowName"))), 30000);
     await driver.wait(until.elementLocated(By.id('inpDsFlowName')), 30000);      
     await driver.wait(until.elementLocated(By.id("inpDsFlowName")), 30000).sendKeys(string, Key.ENTER);        
-    await driver.wait(until.elementLocated(By.id("inpStDeploy")),30000).click();
-    await driver.wait(until.elementLocated(By.css("#inpStDeploy > option:nth-child(2)")), 3000).click();
-    await driver.wait(until.elementIsVisible(driver.findElement(By.name("btnPesqFiltro"), 30000))).click();
-    await driver.wait(until.elementLocated(By.css("#containertable > div > table > tbody > tr > td:nth-child(10) > span")), 30000).click();
-    
+    //await driver.wait(until.elementLocated(By.id("inpStDeploy")),30000).click();
+    //await driver.wait(until.elementLocated(By.css("#inpStDeploy > option:nth-child(2)")), 3000).click();
+    //await driver.wait(until.elementIsVisible(driver.findElement(By.name("btnPesqFiltro"), 30000))).click();
+    //await driver.wait(until.elementLocated(By.css("#containertable > div > table > tbody > tr > td:nth-child(10) > span")), 30000).click();
+    await driver.sleep(2500);
     //Interação com a nova aba
     await driver.wait(
         async () => (await driver.getAllWindowHandles()).length === 2,

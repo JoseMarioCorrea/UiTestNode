@@ -33,3 +33,29 @@ Then ('clicar em Aprovar a Solicitação', async() => {
     await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Aprovada"))), 3000).click();
     await driver.sleep(2000);
 });
+
+Then ('Encaminhar Informações', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Informações Encaminhadas"))), 3000).click();
+    await driver.sleep(2000);
+});
+
+Then ('Solicitar Informações', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Informações Solicitadas"))), 3000).click();
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("inpDsReasonInputReason"))), 30000).sendKeys("Teste Automatizado, vai para gerar Nota Fiscal");
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("BtnConfirmReason"))), 30000).click();
+}); 
+
+Then ('Encaminhar Novas Informações', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Novas Informações Encaminhadas"))), 3000).click();
+    await driver.sleep(2000);
+});
+
+Then ('Encaminhar para Admissão de Colaborador', async() => {
+    await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(driver.findElement(By.id("customBtn_Solicitação Encaminhada"))), 3000).click();
+    await driver.sleep(2000);
+});
