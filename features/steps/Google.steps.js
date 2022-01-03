@@ -14,7 +14,6 @@ When ('O usuário digitar {string} e pesquisar', async (string) => {
     const driver = global.driver;
     await driver.wait(until.elementIsVisible(driver.findElement(By.name("q"), 30000))).sendKeys(string);
     await driver.wait(until.elementIsVisible(driver.findElement(By.name("q"), 30000))).sendKeys(Key.RETURN);
-
 }); 
 
 Then ('Deve realizar a pesquisa corretamente', async() => {
