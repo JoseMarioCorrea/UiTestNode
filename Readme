@@ -1,0 +1,3 @@
+Instalar o node.js - https://nodejs.org/en/
+Instalar as depependencias do projeto - npm install
+Instalar o Cucumber - npm install --save-dev @cucumber/cucumber
