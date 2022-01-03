@@ -1,8 +1,7 @@
 const chrome = require('selenium-webdriver/chrome');
 const {Builder} = require('selenium-webdriver');
 const chromedriver = require('chromedriver');
-
-const { Before } = require('cucumber');
+const { Before } = require('@cucumber/cucumber');
 
 Before(() => {
     chrome.setDefaultService(new chrome.ServiceBuilder(chromedriver.path).build());

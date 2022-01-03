@@ -1,4 +1,4 @@
-const { After } = require("cucumber");
+const { After } = require('@cucumber/cucumber');
 
 After(async () => {
     const driver = global.driver;
